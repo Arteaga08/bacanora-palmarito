@@ -1,7 +1,16 @@
+import Hero from "../components/home/Hero";
+
 const HomePage = () => {
   return (
-    <div className="min-h-screen">
-      <h1 className="text-3xl font-bold">Bacanora Palmarito - Home</h1>
+    <div>
+      <Hero />
+
+      {/* SECCIÓN TEMPORAL PARA PROBAR SCROLL */}
+      <section className="h-screen bg-brand-cream flex items-center justify-center border-t border-brand-dark/10">
+        <p className="text-brand-dark/30 uppercase tracking-widest text-xs">
+          Aquí irá la sección de Historia...
+        </p>
+      </section>
     </div>
   );
 };

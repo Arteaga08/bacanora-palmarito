@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@import "tailwindcss";
+
+@theme {
+  /* Definimos nuestros colores de marca */
+  --color-brand-orange: #eb5228;
+  --color-brand-cream: #f2eee5;
+  --color-brand-dark: #212328;
+
+  /* Podemos definir fuentes si ya las tienes, si no, usamos las del sistema */
+  --font-serif: "Ibarra Real Nova", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+/* Estilo global para el cuerpo */
+body {
+  @apply bg-brand-cream text-brand-dark;
+  font-family: var(--font-sans);
+}
