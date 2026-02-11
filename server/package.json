@@ -19,11 +19,15 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-async-handler": "^1.2.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.6",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
-    "stripe": "^20.3.0"
+    "stripe": "^20.3.1",
+    "xss": "^1.0.15",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "morgan": "^1.10.1",

@@ -50,7 +50,7 @@ const productSchema = mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Crea automáticamente createdAt y updatedAt
+    timestamps: true,
   },
 );
 
