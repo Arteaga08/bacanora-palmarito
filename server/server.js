@@ -22,7 +22,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-
+app.set("trust proxy", 1);
 // --- MIDDLEWARES DE SEGURIDAD ---
 app.use(
   helmet({
