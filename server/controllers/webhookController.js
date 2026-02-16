@@ -3,6 +3,7 @@ import stripe from "../config/stripe.js";
 import Order from "../models/Order.js";
 import Payment from "../models/Payment.js";
 import * as inventoryService from "../services/inventoryService.js";
+import { generateOrderReceipt } from "../services/pdfService.js"; // 👈 1. IMPORTANTE
 import {
   sendPaymentConfirmationEmail,
   notifyOwnerViaEmail,
@@ -47,64 +48,71 @@ export const handleStripeWebhook = async (req, res) => {
         return res.status(404).json({ message: "Orden no encontrada" });
       }
 
-      // 2. Buscar el Pago y VALIDAR ESTADO REAL (con fallback por orderId)
+      // 2. Buscar el Pago
       let payment = await Payment.findOne({
         intentId: paymentIntent.id,
       }).session(session);
 
       if (!payment) {
-        // IntentId no encontrado: intentar localizar por orderId
         payment = await Payment.findOne({ orderId: order._id }).session(
           session,
         );
         if (payment) {
-          // Vincular intentId para trazabilidad y futuras idempotencias
           payment.intentId = paymentIntent.id;
           await payment.save({ session });
-          console.log(
-            `ℹ️ Pago vinculado por orderId. intentId asignado: ${paymentIntent.id}`,
-          );
         }
       }
 
       if (!payment) {
         await session.abortTransaction();
-        console.warn(
-          `⏳ Pago ${paymentIntent.id} no registrado en BD aún (order: ${orderNumber}).`,
-        );
         return res
           .status(404)
           .json({ message: "Registro de pago no encontrado" });
       }
 
-      // 🛡️ SEGURIDAD: Solo si el pago NO es 'paid', restamos stock
+      // 🛡️ SEGURIDAD: Solo si el pago NO es 'paid', procesamos
       if (payment.status !== "paid") {
         console.log(`📉 Restando stock para orden: ${orderNumber}`);
 
-        // EJECUTAR RESTA
         await inventoryService.deductStock(order.items, session);
 
-        // Actualizar Pago
         payment.status = "paid";
-        payment.rawEventId = event.id; // Aquí se marca como procesado
+        payment.rawEventId = event.id;
         await payment.save({ session });
 
-        order.status = "Pendiente";
+        // Actualizamos estado de la orden a PAGADO para que refleje la realidad
+        order.status = "Pagado"; // 👈 Actualizamos esto también
+        order.isPaid = true; // 👈 Y esto
+        order.paidAt = new Date();
         await order.save({ session });
 
         await session.commitTransaction();
-        console.log("✅ Stock actualizado y pago registrado.");
+        console.log(
+          "✅ Stock actualizado, orden pagada y transacción cerrada.",
+        );
+
+        // --- 🚀 ZONA DE NOTIFICACIONES (FUERA DE TRANSACCIÓN) ---
         try {
+          console.log("📄 Generando recibo PDF...");
+
+          // 2. GENERAMOS EL PDF AQUÍ
+          // Lo hacemos fuera de la transacción para no bloquear la BD si tarda
+          const pdfBuffer = await generateOrderReceipt(order);
+
           console.log("📨 Iniciando envío de notificaciones...");
 
-          // Ejecutamos en paralelo para que el fallo de uno no detenga al otro
           const resultados = await Promise.allSettled([
-            sendPaymentConfirmationEmail(order), // #0
-            notifyOwnerViaEmail(order), // #1
-            notifyOwnerViaTelegram(order), // #2
+            // 3. PASAMOS EL BUFFER AL CORREO DEL CLIENTE
+            sendPaymentConfirmationEmail(order, pdfBuffer),
+            notifyOwnerViaEmail(order),
+            notifyOwnerViaTelegram(order),
           ]);
 
-          const nombresTareas = ["Email Cliente", "Email Admin", "Telegram"];
+          const nombresTareas = [
+            "Email Cliente (+PDF)",
+            "Email Admin",
+            "Telegram",
+          ];
 
           resultados.forEach((res, i) => {
             if (res.status === "rejected") {
@@ -115,13 +123,10 @@ export const handleStripeWebhook = async (req, res) => {
               console.log(`✅ ÉXITO ${nombresTareas[i]}`);
             }
           });
-
-          console.log("🔔 Proceso de notificaciones finalizado.");
         } catch (errorNotif) {
-          // Atrapa errores de sintaxis en el bloque, no de los envíos en sí
           console.error(
-            "❌ Error inesperado en el bloque de notificaciones:",
-            errorNotif.message,
+            "❌ Error generando PDF o enviando correos:",
+            errorNotif,
           );
         }
       } else {

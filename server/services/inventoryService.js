@@ -1,4 +1,5 @@
-import Product from "../models/Product.js"; // 👈 ESTO ES LO QUE TE FALTABA
+import Product from "../models/Product.js";
+import { notifyLowStock } from "./notificationService.js";
 
 export const deductStock = async (items, session) => {
   console.log("📦 Iniciando resta de stock para", items.length, "items");
@@ -24,20 +25,27 @@ export const deductStock = async (items, session) => {
     const updatedProduct = await Product.findOneAndUpdate(
       {
         _id: item.productId,
-        countInStock: { $gte: item.quantity }, // Seguridad: no restar si no hay suficiente
+        countInStock: { $gte: item.quantity },
       },
       {
         $inc: { countInStock: -item.quantity },
       },
       {
-        session, // 👈 Muy importante para que el pago y el stock se guarden juntos
+        session,
         new: true,
       },
     );
 
     if (!updatedProduct) {
-      console.error(`❌ ERROR: Stock insuficiente para ${productBefore.name}`);
       throw new Error(`Stock insuficiente para ${productBefore.name}`);
+    }
+
+    // 🔔 NUEVA LÓGICA: Alerta de stock bajo
+    // Si después de la resta quedan 5 o menos, avisamos.
+    if (updatedProduct.countInStock <= 5) {
+      console.log(`⚠️ ALERTA: ${updatedProduct.name} tiene poco stock.`);
+      // No usamos await aquí para no retrasar la transacción de la DB
+      notifyLowStock(updatedProduct);
     }
 
     console.log(

@@ -1,12 +1,13 @@
 import express from "express";
 const router = express.Router();
 
-/* Controllers */
 import {
   addOrderItems,
   getOrders,
   getOrderById,
   getOrderByOrderNumber,
+  getDashboardStats,
+  downloadReceipt, 
 } from "../controllers/orderController.js";
 
 /* Middlewares */
@@ -21,8 +22,7 @@ import {
 import { orderSchema } from "../validator/orderValidator.js";
 import { trackOrderSchema } from "../validator/trackOrderValidator.js";
 
-/* 
- CHECKOUT
+/* CHECKOUT
    POST /api/orders */
 router
   .route("/")
@@ -37,6 +37,11 @@ router.post(
   validate(trackOrderSchema),
   getOrderByOrderNumber,
 );
+
+// Dashboard Stats
+router.get("/stats", protect, admin, getDashboardStats);
+router.get("/:orderNumber/receipt", protect, downloadReceipt);
+
 
 /* ORDEN POR ID (ADMIN)
    GET /api/orders/:id */

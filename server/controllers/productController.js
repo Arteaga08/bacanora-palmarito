@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/Product.js";
+import AuditLog from "../models/AuditLog.js";
 
 // @desc    Obtener todos los productos
 //Public
@@ -82,8 +83,14 @@ export const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    // Si se subieron nuevas imágenes, actualizamos las URLs.
-    // Si no, mantenemos las que ya tenía el producto.
+    // 🕵️‍♂️ CAPTURE PREVIOUS STATE (Before mutation)
+    const previousState = {
+      price: product.price,
+      countInStock: product.countInStock,
+      isAvailable: product.isAvailable,
+    };
+
+    // Images logic
     if (req.files) {
       if (req.files["imagePrimary"])
         product.images.cardPrimary = req.files["imagePrimary"][0].path;
@@ -93,6 +100,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
         product.images.displayDetail = req.files["imageDetail"][0].path;
     }
 
+    // Update fields
     product.name = name || product.name;
     product.slug = slug || product.slug;
     product.description = description || product.description;
@@ -106,6 +114,29 @@ export const updateProduct = asyncHandler(async (req, res) => {
     if (ingredients) product.ingredients = JSON.parse(ingredients);
 
     const updatedProduct = await product.save();
+
+    // 📝 CREATE AUDIT LOG
+    await AuditLog.create({
+      adminId: req.user._id,
+      action: "UPDATE_PRODUCT",
+      module: "Inventory",
+      targetId: product._id.toString(),
+      details: {
+        productName: product.name,
+        from: previousState,
+        to: {
+          price: updatedProduct.price,
+          countInStock: updatedProduct.countInStock,
+          isAvailable: updatedProduct.isAvailable,
+        },
+      },
+      ip: req.ip,
+    });
+
+    console.log(
+      `✅ Audit Log: Product ${product.name} updated by ${req.user.email}`,
+    );
+
     res.json(updatedProduct);
   } else {
     res.status(404);

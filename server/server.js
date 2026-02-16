@@ -12,11 +12,12 @@ import productRoutes from "./routes/productRoutes.js";
 import mixologyRoutes from "./routes/mixologyRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import shippingRoutes from "./routes/shippingRoutes.js";
+import auditRoutes from "./routes/auditRoutes.js";
 import webhookRoutes from "./routes/webhookRoutes.js";
 
 import mongoSanitizeMiddleware from "./middleware/mongoSanitizeMiddleware.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-
 
 dotenv.config();
 connectDB();
@@ -49,6 +50,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/mixology", mixologyRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/shipping", shippingRoutes);
+app.use("/api/audit", auditRoutes);
 
 // 4. MANEJO DE ERRORES
 app.use(notFound);

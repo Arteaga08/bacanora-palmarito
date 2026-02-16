@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Mixology from "../models/Mixology.js";
+import AuditLog from "../models/AuditLog.js";
 
 // @desc    Obtener todas las recetas
 // Public
@@ -8,7 +9,7 @@ export const getRecipes = asyncHandler(async (req, res) => {
   res.json(recipes);
 });
 
-// @desc    Crear receta 
+// @desc    Crear receta
 //Admin
 export const createRecipe = asyncHandler(async (req, res) => {
   const { name, slug, ingredients, preparation } = req.body;
@@ -35,6 +36,14 @@ export const updateRecipe = asyncHandler(async (req, res) => {
   const recipe = await Mixology.findById(req.params.id);
 
   if (recipe) {
+    // 🕵️‍♂️ CAPTURE PREVIOUS STATE
+    const previousState = {
+      name: recipe.name,
+      slug: recipe.slug,
+      ingredients: recipe.ingredients,
+      preparation: recipe.preparation,
+    };
+
     recipe.name = name || recipe.name;
     recipe.slug = slug || recipe.slug;
     recipe.preparation = preparation || recipe.preparation;
@@ -50,6 +59,28 @@ export const updateRecipe = asyncHandler(async (req, res) => {
     }
 
     const updatedRecipe = await recipe.save();
+
+    // 📝 CREATE AUDIT LOG
+    await AuditLog.create({
+      adminId: req.user._id,
+      action: "UPDATE_MIXOLOGY_RECIPE",
+      module: "Mixology",
+      targetId: recipe._id.toString(),
+      details: {
+        recipeName: updatedRecipe.name,
+        from: previousState,
+        to: {
+          name: updatedRecipe.name,
+          slug: updatedRecipe.slug,
+          ingredients: updatedRecipe.ingredients,
+          preparation: updatedRecipe.preparation,
+        },
+      },
+      ip: req.ip,
+    });
+
+    console.log(`✅ Audit Log: Recipe "${updatedRecipe.name}" updated.`);
+
     res.json(updatedRecipe);
   } else {
     res.status(404);
@@ -57,7 +88,7 @@ export const updateRecipe = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Eliminar 
+// @desc    Eliminar
 //Admin
 export const deleteRecipe = asyncHandler(async (req, res) => {
   const recipe = await Mixology.findById(req.params.id);
