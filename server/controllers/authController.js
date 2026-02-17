@@ -5,9 +5,25 @@ import jwt from "jsonwebtoken";
 // 1. Asegúrate de que tenga "export" al inicio
 export const authAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  // 🕵️ LOG 1: ¿Qué está llegando del frontend?
+  console.log("1. Body recibido:", req.body);
+
+  // Verificamos que no vengan vacíos
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Faltan email o password");
+  }
+
   const user = await AdminUser.findOne({ email });
 
+  // 🕵️ LOG 2: ¿Encontró al usuario en Mongo?
+  console.log("2. Usuario encontrado:", user ? user.email : "NO EXISTE");
+
   if (user && (await user.matchPassword(password))) {
+    // 🕵️ LOG 3: Contraseña correcta, generando token...
+    console.log("3. Login exitoso, enviando respuesta");
+
     res.json({
       _id: user._id,
       username: user.username,
@@ -18,6 +34,7 @@ export const authAdmin = asyncHandler(async (req, res) => {
       }),
     });
   } else {
+    console.log("4. Contraseña incorrecta o usuario no existe");
     res.status(401);
     throw new Error("Invalid email or password");
   }

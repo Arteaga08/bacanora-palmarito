@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Order from "../models/Order.js";
 import Payment from "../models/Payment.js";
 import Product from "../models/Product.js";
+import Mixology from "../models/Mixology.js";
 import stripe from "../config/stripe.js";
 
 import { generateOrderReceipt } from "../services/pdfService.js";
@@ -227,123 +228,136 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
 // @route   GET /api/orders/stats
 // @access  Private/Admin
 export const getDashboardStats = asyncHandler(async (req, res) => {
-  const now = new Date();
+  const { startDate, endDate } = req.query;
 
-  // 🕒 Preparación de fechas
-  const startOfToday = new Date(now.setHours(0, 0, 0, 0));
-  const start12MonthsAgo = new Date();
-  start12MonthsAgo.setMonth(start12MonthsAgo.getMonth() - 11);
-
-  const [orderStats, lowStockProducts] = await Promise.all([
-    Order.aggregate([
-      {
-        $facet: {
-          // 📉 Tendencia de 12 meses (Filtro previo para precisión)
-          monthlyTrend: [
-            {
-              $match: {
-                createdAt: { $gte: start12MonthsAgo },
-                status: { $ne: "Cancelado" },
-              },
-            },
-            {
-              $group: {
-                _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
-                revenue: { $sum: "$totals.total" },
-                orders: { $sum: 1 },
-              },
-            },
-            { $sort: { _id: 1 } },
-          ],
-
-          // 🍶 Top 5 Productos (Por ID para evitar conflictos de nombres)
-          products: [
-            { $match: { status: { $nin: ["Cancelado", "Pago Pendiente"] } } },
-            { $unwind: "$items" },
-            {
-              $group: {
-                _id: "$items.product",
-                name: { $first: "$items.name" },
-                totalQty: { $sum: "$items.quantity" },
-                totalRevenue: { $sum: "$items.subtotal" },
-              },
-            },
-            { $sort: { totalQty: -1 } },
-            { $limit: 5 },
-          ],
-
-          // 📦 Control de Estados (Sin cancelados)
-          operations: [
-            { $match: { status: { $ne: "Cancelado" } } },
-            { $group: { _id: "$status", count: { $sum: 1 } } },
-          ],
-
-          // ⚡ Órdenes de HOY
-          today: [
-            {
-              $match: {
-                createdAt: { $gte: startOfToday },
-                status: { $ne: "Cancelado" },
-              },
-            },
-            { $count: "count" },
-          ],
-
-          // 💎 Top Clientes (Gasto real)
-          topCustomers: [
-            { $match: { status: "Pagado" } },
-            {
-              $group: {
-                _id: "$customer.email",
-                name: { $first: "$customer.name" },
-                totalSpent: { $sum: "$totals.total" },
-              },
-            },
-            { $sort: { totalSpent: -1 } },
-            { $limit: 5 },
-          ],
-
-          // 💰 Resumen Global
-          global: [
-            { $match: { status: { $nin: ["Cancelado", "Pago Pendiente"] } } },
-            {
-              $group: {
-                _id: null,
-                totalRevenue: { $sum: "$totals.total" },
-                totalOrders: { $sum: 1 },
-              },
-            },
-          ],
-        },
+  let dateQuery = {};
+  if (startDate && endDate) {
+    dateQuery = {
+      createdAt: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
       },
-    ]),
-    // 🚨 Alerta de inventario (Stock <= 5)
-    Product.find({ countInStock: { $lte: 5 } }).select("name countInStock"),
-  ]);
+    };
+  }
+
+  const now = new Date();
+  const startOfToday = new Date(now.setHours(0, 0, 0, 0));
+
+  // 💰 Definimos qué estatus representan dinero real en caja
+  const paidStatuses = ["Pagado", "Enviado", "Entregado"];
+
+  // 3. CONSULTA PARALELA: AGREGACIÓN + PRODUCTOS + MIXOLOGÍA
+  const [orderStats, lowStockProducts, allBacanoras, totalRecipes] =
+    await Promise.all([
+      Order.aggregate([
+        {
+          $facet: {
+            // 💰 Resumen Global (Filtrado por pagos reales)
+            global: [
+              {
+                $match: {
+                  ...dateQuery,
+                  status: { $in: paidStatuses }, // 🚀 Solo sumamos lo cobrado
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  totalRevenue: { $sum: "$totals.total" },
+                  totalOrders: { $sum: 1 },
+                },
+              },
+            ],
+
+            // ⚡ Órdenes de HOY (Volumen de trabajo)
+            today: [
+              {
+                $match: {
+                  createdAt: { $gte: startOfToday },
+                  status: { $ne: "Cancelado" },
+                },
+              },
+              {
+                $group: {
+                  _id: null,
+                  count: { $sum: 1 },
+                  // Revenue de hoy filtrado por pago
+                  revenue: {
+                    $sum: {
+                      $cond: [
+                        { $in: ["$status", paidStatuses] },
+                        "$totals.total",
+                        0,
+                      ],
+                    },
+                  },
+                },
+              },
+            ],
+
+            // 📊 RENDIMIENTO POR PRODUCTO (Solo ventas pagadas)
+            productSales: [
+              {
+                $match: {
+                  ...dateQuery,
+                  status: { $in: paidStatuses },
+                },
+              },
+              { $unwind: "$items" },
+              {
+                $group: {
+                  _id: "$items.name",
+                  qty: { $sum: "$items.quantity" },
+                  revenue: { $sum: "$items.subtotal" },
+                },
+              },
+            ],
+
+            // 📦 Distribución por Estado
+            operations: [
+              {
+                $match: {
+                  ...dateQuery,
+                  status: { $exists: true },
+                },
+              },
+              { $group: { _id: "$status", count: { $sum: 1 } } },
+            ],
+          },
+        },
+      ]),
+
+      Product.find({ countInStock: { $lte: 5 } }).select("name countInStock"),
+      Product.find({ category: "Bacanora" }).select("name"),
+      Mixology.countDocuments({ isActive: { $ne: false } }), // 👈 Cambio 2: Conteo de recetas
+    ]);
 
   const results = orderStats[0];
   const global = results.global[0] || { totalRevenue: 0, totalOrders: 0 };
+  const today = results.today[0] || { count: 0, revenue: 0 };
+
+  const salesMap = results.productSales.reduce((acc, item) => {
+    acc[item._id] = item;
+    return acc;
+  }, {});
+
+  const productPerformance = allBacanoras.map((p) => ({
+    name: p.name,
+    qty: salesMap[p.name]?.qty || 0,
+    revenue: salesMap[p.name]?.revenue || 0,
+  }));
 
   res.json({
     cards: {
-      todayOrders: results.today[0]?.count || 0,
+      todayOrders: today.count,
       totalRevenue: global.totalRevenue,
       totalOrders: global.totalOrders,
       lowStockAlerts: lowStockProducts.length,
+      totalRecipes: totalRecipes, // 👈 Enviamos el dato al Front
     },
-    charts: {
-      salesTrend: results.monthlyTrend,
-      topProducts: results.products.map((p) => ({
-        ...p,
-        share:
-          global.totalRevenue > 0
-            ? ((p.totalRevenue / global.totalRevenue) * 100).toFixed(2) + "%"
-            : "0%",
-      })),
-    },
-    customers: results.topCustomers,
-    inventory: { atRisk: lowStockProducts },
+    productPerformance,
     operations: { statusDistribution: results.operations },
+    inventory: { atRisk: lowStockProducts },
   });
 });
 

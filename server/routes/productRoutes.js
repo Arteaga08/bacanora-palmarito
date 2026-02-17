@@ -5,9 +5,11 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  archiveProduct,
+  updateProductStock,
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
-// 1. IMPORTA TU CONFIGURACIÓN DE CLOUDINARY
+
 import upload from "../config/cloudinary.js";
 
 const router = express.Router();
@@ -28,8 +30,12 @@ router
 
 router
   .route("/:id")
-  .get(getProductById) // <--- ESTA ES LA NUEVA
+  .get(getProductById)
   .put(protect, admin, productUpload, updateProduct)
   .delete(protect, admin, deleteProduct);
+
+router.put("/:id/archive", protect, admin, archiveProduct);
+
+router.put("/:id/stock", protect, admin, updateProductStock);
 
 export default router;

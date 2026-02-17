@@ -12,13 +12,24 @@ import ShopPage from "./pages/ShopPage";
 import HistoryPage from "./pages/HistoryPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import MixologyPage from "./pages/MixologyPage";
-import RecipePage from "./pages/RecipePage"; // Faltaba
+import RecipePage from "./pages/RecipePage";
 import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage"; // Faltaba
+import CheckoutPage from "./pages/CheckoutPage";
 
 // Admin Pages
 import AdminDashBoard from "./pages/admin/AdminDashboard";
 import LoginPage from "./pages/admin/LoginPage";
+import AdminLayout from "./components/layout/AdminLayout";
+import OrdersPage from "./pages/admin/OrdersPage";
+import OrderDetailsPage from "./pages/admin/OrderDetailsPage";
+import AuditLogPage from "./pages/admin/AuditLogPage";
+import ProductsPage from "./pages/admin/ProductsPage";
+import InventoryPage from "./pages/admin/InventoryPage";
+import ProductCreatePage from "./pages/admin/ProductCreatePage";
+import ProductEditPage from "./pages/admin/ProductEditPage";
+import AdminMixologyPage from "./pages/admin/AdminMixologyPage";
+import AdminRecipeCreatePage from "./pages/admin/AdminRecipeCreatePage";
+import AdminRecipeEditPage from "./pages/admin/AdminRecipeEditPage";
 
 const router = createBrowserRouter([
   // RUTAS PÚBLICAS
@@ -39,12 +50,43 @@ const router = createBrowserRouter([
 
   // RUTAS DE ADMIN
   {
-    path: "/admin/login",
-    element: <LoginPage />,
+    path: "/admin",
+    element: <AdminLayout />, // 👈 El "Padre" que tiene el Sidebar
+    children: [
+      {
+        path: "dashboard", // ➝ /admin/dashboard
+        element: <AdminDashBoard />,
+      },
+      {
+        path: "orders", // ➝ /admin/orders (¡NUEVA RUTA!) 🚚
+        element: <OrdersPage />,
+      },
+      {
+        path: "orders/:id",
+        element: <OrderDetailsPage />,
+      },
+      {
+        path: "products",
+        element: <ProductsPage />,
+      },
+      { path: "products/new", element: <ProductCreatePage /> },
+      { path: "products/edit/:id", element: <ProductEditPage /> },
+      { path: "mixology", element: <AdminMixologyPage /> },
+      { path: "mixology/new", element: <AdminRecipeCreatePage /> },
+      { path: "mixology/edit/:id", element: <AdminRecipeEditPage /> },
+      {
+        path: "inventory",
+        element: <InventoryPage />,
+      },
+      {
+        path: "logs",
+        element: <AuditLogPage />,
+      },
+    ],
   },
   {
-    path: "/admin/dashboard",
-    element: <AdminDashBoard />,
+    path: "/admin/login",
+    element: <LoginPage />,
   },
 ]);
 

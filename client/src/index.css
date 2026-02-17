@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import "tailwindcss";
-
 @theme {
   /* Definimos nuestros colores de marca */
   --color-brand-orange: #eb5228;

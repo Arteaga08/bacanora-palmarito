@@ -148,8 +148,25 @@ export const updateProduct = asyncHandler(async (req, res) => {
 //Admin
 export const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
+
   if (product) {
+    const productName = product.name; // Guardamos el nombre antes de borrarlo
+
     await product.deleteOne();
+
+    // 📝 REGISTRO EN AUDITORÍA
+    await AuditLog.create({
+      adminId: req.user._id,
+      action: "DELETE_PRODUCT",
+      module: "Inventory",
+      targetId: req.params.id,
+      details: {
+        productName: productName,
+        message: "Producto eliminado definitivamente del catálogo",
+      },
+      ip: req.ip,
+    });
+
     res.json({ message: "Producto eliminado correctamente" });
   } else {
     res.status(404);
@@ -164,6 +181,77 @@ export const getProductById = asyncHandler(async (req, res) => {
 
   if (product) {
     res.json(product);
+  } else {
+    res.status(404);
+    throw new Error("Producto no encontrado");
+  }
+});
+
+// @desc    Actualizar únicamente el stock (Inventario Rápido)
+// @route   PUT /api/products/:id/stock
+// @access  Private/Admin
+export const updateProductStock = asyncHandler(async (req, res) => {
+  const { countInStock } = req.body;
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    const previousStock = product.countInStock;
+    product.countInStock = countInStock;
+
+    const updatedProduct = await product.save();
+
+    // 📝 Auditoría específica para movimiento de inventario
+    await AuditLog.create({
+      adminId: req.user._id,
+      action: "UPDATE_INVENTORY",
+      module: "Inventory",
+      targetId: product._id.toString(),
+      details: {
+        productName: product.name,
+        from: { countInStock: previousStock },
+        to: { countInStock: updatedProduct.countInStock },
+      },
+      ip: req.ip,
+    });
+
+    res.json(updatedProduct);
+  } else {
+    res.status(404);
+    throw new Error("Producto no encontrado");
+  }
+});
+
+// @desc    Archivar producto (Soft Delete)
+// @route   PUT /api/products/:id/archive
+// @access  Private/Admin
+export const archiveProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    // Cambiamos el estado a inactivo
+    product.isActive = false;
+    const archivedProduct = await product.save();
+
+    // 📝 REGISTRO EN AUDITORÍA
+    if (global.AuditLog) {
+      // Verificamos si tienes el modelo de Auditoría
+      await AuditLog.create({
+        adminId: req.user._id,
+        action: "ARCHIVE_PRODUCT",
+        module: "Inventory",
+        targetId: product._id,
+        details: {
+          productName: product.name,
+          message: "Producto retirado del catálogo activo (Soft Delete)",
+        },
+        ip: req.ip,
+      });
+    }
+
+    res.json({
+      message: "Producto archivado correctamente",
+      product: archivedProduct,
+    });
   } else {
     res.status(404);
     throw new Error("Producto no encontrado");

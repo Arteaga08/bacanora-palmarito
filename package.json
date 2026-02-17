@@ -1,5 +1,16 @@
 {
+  "name": "palmarito-bacanora-root",
+  "version": "1.0.0",
+  "description": "Root script for concurrency",
+  "scripts": {
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
   "dependencies": {
     "express-rate-limit": "^8.2.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
