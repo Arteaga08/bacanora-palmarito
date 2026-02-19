@@ -23,7 +23,7 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-brand-cream font-sans overflow-hidden">
+    <div className="flex h-screen bg-brand-beige font-sans overflow-hidden">
       {/* SIDEBAR MODULAR (Separado y Renombrado) */}
       <AdminSidebar
         isOpen={isSidebarOpen}
@@ -34,7 +34,7 @@ const AdminLayout = () => {
       {/* CONTENIDO PRINCIPAL */}
       <main className="flex-1 flex flex-col h-full overflow-hidden w-full relative">
         {/* HEADER */}
-        <header className="h-16 md:h-20 border-b border-brand-dark/10 flex items-center justify-between px-4 md:px-10 bg-brand-cream/80 backdrop-blur-md shrink-0">
+        <header className="h-16 md:h-20 border-b border-brand-dark/10 flex items-center justify-between px-4 md:px-10 bg-brand-beige/80 backdrop-blur-md shrink-0">
           {/* Botón Hamburguesa (Solo visible en Móvil) */}
           <button
             onClick={() => setIsSidebarOpen(true)}
@@ -49,13 +49,13 @@ const AdminLayout = () => {
           </h2>
 
           {/* Título Móvil (Logo) */}
-          <span className="md:hidden text-lg font-serif text-brand-orange tracking-tight">
-            PALMARITO
+          <span className="md:hidden text-lg font-serif text-brand-clay tracking-tight">
+            P A L M A R I T O
           </span>
 
           {/* Avatar / Perfil */}
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-brand-orange flex items-center justify-center text-[10px] text-brand-cream font-bold shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-brand-clay flex items-center justify-center text-[10px] text-brand-cream font-bold shadow-sm">
               AD
             </div>
           </div>

@@ -144,7 +144,7 @@ const ProductEditPage = () => {
   if (loading)
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-brand-orange" size={32} />
+        <Loader2 className="animate-spin text-brand-clay" size={32} />
       </div>
     );
 
@@ -161,7 +161,7 @@ const ProductEditPage = () => {
           <h1 className="text-3xl font-serif text-brand-dark tracking-tighter">
             Editar Botella
           </h1>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-orange mt-1 font-bold">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-clay mt-1 font-bold">
             Modificando: {product.name}
           </p>
         </div>
@@ -187,7 +187,7 @@ const ProductEditPage = () => {
                   name="name"
                   value={product.name}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -200,7 +200,7 @@ const ProductEditPage = () => {
                   name="slug"
                   value={product.slug}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
             </div>
@@ -214,7 +214,7 @@ const ProductEditPage = () => {
                 value={product.description}
                 onChange={handleChange}
                 rows="4"
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
               ></textarea>
             </div>
             <div className="space-y-2">
@@ -226,7 +226,7 @@ const ProductEditPage = () => {
                 name="ingredients"
                 value={product.ingredients}
                 onChange={handleChange}
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-orange outline-none"
+                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none"
               />
             </div>
           </div>
@@ -246,7 +246,7 @@ const ProductEditPage = () => {
                   name="price"
                   value={product.price}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -259,7 +259,7 @@ const ProductEditPage = () => {
                   name="countInStock"
                   value={product.countInStock}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -326,7 +326,7 @@ const ProductEditPage = () => {
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-orange transition-all shadow-xl disabled:opacity-50"
+              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-xl disabled:opacity-50"
             >
               {saving ? (
                 "Guardando..."

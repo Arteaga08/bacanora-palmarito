@@ -1,18 +1,54 @@
 @import "tailwindcss";
 
-@theme {
-  /* Definimos nuestros colores de marca */
-  --color-brand-orange: #eb5228;
-  --color-brand-cream: #f2eee5;
-  --color-brand-dark: #212328;
+/* --- 1. DEFINICIÓN DE @FONT-FACE --- */
 
-  /* Podemos definir fuentes si ya las tienes, si no, usamos las del sistema */
-  --font-serif: "Ibarra Real Nova", serif;
-  --font-sans: "Inter", sans-serif;
+@font-face {
+  font-family: "Raaf";
+  src: url("./assets/fonts/Maax-Bold2.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* Estilo global para el cuerpo */
-body {
-  @apply bg-brand-cream text-brand-dark;
-  font-family: var(--font-sans);
+@font-face {
+  font-family: "Raaf";
+  src: url("./assets/fonts/Maax-Mediumitalic.ttf") format("truetype");
+  font-weight: 500; /* Medium */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ballpoint";
+  src: url("./assets/fonts/Ballpoint-Regular.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 2. CONFIGURACIÓN DEL TEMA TAILWIND V4 --- */
+
+@theme {
+  /* Tipografías */
+  --font-brand-sans: "Raaf", ui-sans-serif, system-ui;
+  --font-brand-script: "Ballpoint", cursive;
+
+  /* Colores Oficiales (PDF) */
+  --color-brand-clay: #f8531b;
+  --color-brand-black: #000000;
+  --color-brand-beige: #f5f5dc;
+  --color-brand-sand: #ab9075
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }

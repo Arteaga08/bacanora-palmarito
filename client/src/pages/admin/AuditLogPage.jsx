@@ -105,7 +105,7 @@ const AuditLogPage = () => {
         </div>
         <button
           onClick={fetchLogs}
-          className="flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest text-brand-dark/40 hover:text-brand-orange transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 text-[9px] font-bold uppercase tracking-widest text-brand-dark/40 hover:text-brand-clay transition-colors"
         >
           <RefreshCw size={14} /> Sincronizar
         </button>
@@ -145,7 +145,7 @@ const AuditLogPage = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-col">
-                    <span className="text-[9px] uppercase tracking-widest text-brand-orange font-bold">
+                    <span className="text-[9px] uppercase tracking-widest text-brand-clay font-bold">
                       {t("modulos", log.module)}
                     </span>
                     <span className="text-[10px] font-bold text-brand-dark uppercase">

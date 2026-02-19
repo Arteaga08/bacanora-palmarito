@@ -101,7 +101,7 @@ const AdminDashboard = () => {
   if (loading && !stats)
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="animate-spin text-brand-orange" size={32} />
+        <Loader2 className="animate-spin text-brand-clay" size={32} />
       </div>
     );
 
@@ -115,7 +115,7 @@ const AdminDashboard = () => {
           </h1>
           <p className="text-[10px] uppercase tracking-[0.3em] text-brand-dark/40 mt-2 flex items-center gap-2">
             Mostrando datos de:{" "}
-            <span className="text-brand-orange font-bold">{dateLabel}</span>
+            <span className="text-brand-clay font-bold">{dateLabel}</span>
           </p>
         </div>
 
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="appearance-none bg-white border border-brand-dark/20 hover:border-brand-orange text-brand-dark text-[10px] font-bold uppercase tracking-widest py-2 pl-3 pr-8 rounded-sm cursor-pointer outline-none transition-colors h-9"
+              className="appearance-none bg-white border border-brand-dark/20 hover:border-brand-clay text-brand-dark text-[10px] font-bold uppercase tracking-widest py-2 pl-3 pr-8 rounded-sm cursor-pointer outline-none transition-colors h-9"
             >
               <option value="all">Histórico</option>
               <option value="today">Hoy</option>
@@ -152,7 +152,7 @@ const AdminDashboard = () => {
 
           <button
             onClick={fetchStats}
-            className="h-9 w-9 flex items-center justify-center border border-brand-dark/10 hover:border-brand-orange text-brand-dark/40 hover:text-brand-orange transition-colors rounded-sm bg-white"
+            className="h-9 w-9 flex items-center justify-center border border-brand-dark/10 hover:border-brand-clay text-brand-dark/40 hover:text-brand-clay transition-colors rounded-sm bg-white"
             title="Actualizar datos"
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
@@ -245,7 +245,7 @@ const AdminDashboard = () => {
                         <span className="text-[10px] font-mono text-brand-dark/20 font-bold">
                           0{index + 1}
                         </span>
-                        <span className="text-xs font-bold text-brand-dark uppercase tracking-tight group-hover:text-brand-orange transition-colors">
+                        <span className="text-xs font-bold text-brand-dark uppercase tracking-tight group-hover:text-brand-clay transition-colors">
                           {product.name}
                         </span>
                       </div>
@@ -268,7 +268,7 @@ const AdminDashboard = () => {
                       <div className="flex items-center justify-end gap-3">
                         <div className="w-20 bg-brand-dark/5 h-1 rounded-full overflow-hidden">
                           <div
-                            className="bg-brand-orange h-full transition-all duration-1000"
+                            className="bg-brand-clay h-full transition-all duration-1000"
                             style={{ width: `${percentage}%` }}
                           ></div>
                         </div>

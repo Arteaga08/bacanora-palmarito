@@ -115,7 +115,7 @@ const AdminRecipeCreatePage = () => {
           <h1 className="text-3xl font-serif text-brand-dark tracking-tighter">
             Nuevo Cóctel
           </h1>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-orange mt-1 font-bold">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-clay mt-1 font-bold">
             Registro de Mixología
           </p>
         </div>
@@ -142,7 +142,7 @@ const AdminRecipeCreatePage = () => {
                   type="text"
                   value={name}
                   onChange={handleNameChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                   placeholder="Ej. Bacanora Sunrise"
                 />
               </div>
@@ -155,7 +155,7 @@ const AdminRecipeCreatePage = () => {
                   type="text"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-orange outline-none bg-brand-dark/5"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none bg-brand-dark/5"
                 />
               </div>
             </div>
@@ -169,7 +169,7 @@ const AdminRecipeCreatePage = () => {
                 rows="6"
                 value={preparation}
                 onChange={(e) => setPreparation(e.target.value)}
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange leading-relaxed"
+                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay leading-relaxed"
                 placeholder="Paso 1: Agregar hielo... Paso 2: Servir Bacanora..."
               ></textarea>
             </div>
@@ -184,7 +184,7 @@ const AdminRecipeCreatePage = () => {
               <button
                 type="button"
                 onClick={addIngredient}
-                className="text-[9px] uppercase font-bold tracking-widest flex items-center gap-1 text-brand-orange hover:text-brand-dark transition-colors"
+                className="text-[9px] uppercase font-bold tracking-widest flex items-center gap-1 text-brand-clay hover:text-brand-dark transition-colors"
               >
                 <Plus size={14} /> Agregar Insumo
               </button>
@@ -202,7 +202,7 @@ const AdminRecipeCreatePage = () => {
                     value={ing}
                     onChange={(e) => updateIngredient(index, e.target.value)}
                     placeholder={`Ingrediente ${index + 1} (ej. 1.5 oz Bacanora)`}
-                    className="flex-1 p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                    className="flex-1 p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                   />
                   {ingredients.length > 1 && (
                     <button
@@ -255,7 +255,7 @@ const AdminRecipeCreatePage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-brand-orange transition-all shadow-xl disabled:opacity-50"
+              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-xl disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="animate-spin" size={16} />

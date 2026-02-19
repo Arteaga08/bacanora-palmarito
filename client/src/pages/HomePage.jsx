@@ -1,16 +1,30 @@
 import Hero from "../components/home/Hero";
+import HomeHistory from "../components/home/HomeHistory";
+import HomeProducts from "../components/home/HomeProducts";
+import HomeCocktails from "../components/home/HomeCocktails";
+import HomeTransition from "../components/home/HomeTransition";
+import HomeInstagram from "../components/home/HomeInstagram";
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="flex flex-col">
+      {/* 1. Impacto Inicial */}
       <Hero />
 
-      {/* SECCIÓN TEMPORAL PARA PROBAR SCROLL */}
-      <section className="h-screen bg-brand-cream flex items-center justify-center border-t border-brand-dark/10">
-        <p className="text-brand-dark/30 uppercase tracking-widest text-xs">
-          Aquí irá la sección de Historia...
-        </p>
-      </section>
+      {/* 2. Sección que sigue (Scroll) */}
+      <HomeHistory />
+
+      {/* 3. El Catálogo (Scroll) */}
+      <HomeProducts />
+
+      {/* 4. Imagen Separadora de Gran Calidad */}
+      <HomeTransition />
+
+      {/* 5. Sección Final de la Home (Scroll) */}
+      <HomeCocktails />
+
+      {/* 5.- Instagram */}
+      <HomeInstagram />
     </div>
   );
 };

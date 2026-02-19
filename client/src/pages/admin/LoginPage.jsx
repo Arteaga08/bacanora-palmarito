@@ -75,7 +75,7 @@ const LoginPage = () => {
             <input
               type="email"
               required
-              className="w-full bg-transparent border-b border-brand-dark/20 py-3 focus:outline-none focus:border-brand-orange transition-colors text-sm"
+              className="w-full bg-transparent border-b border-brand-dark/20 py-3 focus:outline-none focus:border-brand-clay transition-colors text-sm"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -88,7 +88,7 @@ const LoginPage = () => {
             <input
               type="password"
               required
-              className="w-full bg-transparent border-b border-brand-dark/20 py-3 focus:outline-none focus:border-brand-orange transition-colors text-sm"
+              className="w-full bg-transparent border-b border-brand-dark/20 py-3 focus:outline-none focus:border-brand-clay transition-colors text-sm"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -97,7 +97,7 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-8 py-4 bg-brand-dark text-brand-cream text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-brand-orange transition-all duration-500 flex items-center justify-center"
+            className="w-full mt-8 py-4 bg-brand-dark text-brand-cream text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-brand-clay transition-all duration-500 flex items-center justify-center"
           >
             {loading ? (
               <Loader2 className="animate-spin" size={16} />

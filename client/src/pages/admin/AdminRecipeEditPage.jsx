@@ -125,7 +125,7 @@ const AdminRecipeEditPage = () => {
           <h1 className="text-3xl font-serif text-brand-dark tracking-tighter">
             Editar Receta
           </h1>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-orange mt-1 font-bold">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-clay mt-1 font-bold">
             Botella: {name}
           </p>
         </div>
@@ -153,7 +153,7 @@ const AdminRecipeEditPage = () => {
                     setName(e.target.value);
                     setSlug(slugify(e.target.value));
                   }}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -165,7 +165,7 @@ const AdminRecipeEditPage = () => {
                   type="text"
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-orange outline-none bg-brand-dark/5"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none bg-brand-dark/5"
                 />
               </div>
             </div>
@@ -178,7 +178,7 @@ const AdminRecipeEditPage = () => {
                 rows="5"
                 value={preparation}
                 onChange={(e) => setPreparation(e.target.value)}
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
               ></textarea>
             </div>
           </div>
@@ -191,7 +191,7 @@ const AdminRecipeEditPage = () => {
               <button
                 type="button"
                 onClick={addIngredient}
-                className="text-[9px] uppercase font-bold text-brand-orange hover:text-brand-dark transition-colors flex items-center gap-1"
+                className="text-[9px] uppercase font-bold text-brand-clay hover:text-brand-dark transition-colors flex items-center gap-1"
               >
                 <Plus size={14} /> Añadir campo
               </button>
@@ -208,7 +208,7 @@ const AdminRecipeEditPage = () => {
                     value={typeof ing === "string" ? ing : ""}
                     onChange={(e) => updateIngredient(index, e.target.value)}
                     placeholder="Ej. 2oz de Bacanora"
-                    className="flex-1 p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                    className="flex-1 p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                   />
                   <button
                     type="button"
@@ -253,7 +253,7 @@ const AdminRecipeEditPage = () => {
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-brand-orange transition-all shadow-xl disabled:opacity-50"
+              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-xl disabled:opacity-50"
             >
               {saving ? (
                 <Loader2 className="animate-spin" size={16} />

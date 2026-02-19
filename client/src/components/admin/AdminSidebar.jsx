@@ -57,7 +57,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, handleLogout }) => {
           <div>
             <Link
               to="/"
-              className="text-2xl font-serif text-brand-orange tracking-tighter"
+              className="text-2xl font-serif text-brand-clay tracking-tighter"
             >
               PALMARITO
             </Link>
@@ -84,7 +84,7 @@ const AdminSidebar = ({ isOpen, setIsOpen, handleLogout }) => {
                 className={`flex items-center space-x-4 px-4 py-3 text-[10px] uppercase tracking-[0.2em] transition-all duration-300 rounded-sm ${
                   isActive
                     ? "bg-brand-dark text-brand-cream"
-                    : "text-brand-dark/60 hover:text-brand-orange hover:bg-brand-dark/5"
+                    : "text-brand-dark/60 hover:text-brand-clay hover:bg-brand-dark/5"
                 }`}
               >
                 {item.icon}

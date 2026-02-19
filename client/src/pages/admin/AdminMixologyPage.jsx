@@ -77,14 +77,14 @@ const AdminMixologyPage = () => {
             <input
               type="text"
               placeholder="Buscar cóctel..."
-              className="pl-9 pr-4 py-2 text-sm border border-brand-dark/10 rounded-sm outline-none focus:border-brand-orange w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm border border-brand-dark/10 rounded-sm outline-none focus:border-brand-clay w-full sm:w-64"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Link
             to="/admin/mixology/new"
-            className="bg-brand-orange text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-dark transition-all shadow-lg"
+            className="bg-brand-clay text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-dark transition-all shadow-lg"
           >
             <Plus size={16} /> Nueva Receta
           </Link>
@@ -95,7 +95,7 @@ const AdminMixologyPage = () => {
       <div className="bg-white border border-brand-dark/10 rounded-sm shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-200">
-            <thead className="bg-brand-dark/5 text-[9px] uppercase tracking-widest text-brand-dark/60 font-bold border-b border-brand-dark/10">
+            <thead className="bg-brand-dark text-[9px] uppercase tracking-widest text-brand-dark/60 font-bold border-b border-brand-dark/10">
               <tr>
                 <th className="px-6 py-4">Cóctel</th>
                 <th className="px-6 py-4">Slug</th>
@@ -159,13 +159,13 @@ const AdminMixologyPage = () => {
                           href={`/mixologia/${recipe.slug}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-2 text-brand-dark/40 hover:text-brand-orange transition-all"
+                          className="p-2 text-brand-dark/40 hover:text-brand-clay transition-all"
                         >
                           <Eye size={16} />
                         </a>
                         <Link
                           to={`/admin/mixology/edit/${recipe._id}`}
-                          className="p-2 text-brand-dark/40 hover:text-brand-orange transition-all"
+                          className="p-2 text-brand-dark/40 hover:text-brand-clay transition-all"
                         >
                           <Edit3 size={16} />
                         </Link>

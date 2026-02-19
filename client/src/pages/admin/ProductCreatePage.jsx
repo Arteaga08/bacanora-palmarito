@@ -132,7 +132,7 @@ const ProductCreatePage = () => {
                   value={product.name}
                   onChange={handleChange}
                   placeholder="Ej. Bacanora Blanco Reserva"
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -146,7 +146,7 @@ const ProductCreatePage = () => {
                   value={product.slug}
                   onChange={handleChange}
                   placeholder="ej-bacanora-blanco"
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
             </div>
@@ -161,7 +161,7 @@ const ProductCreatePage = () => {
                 value={product.description}
                 onChange={handleChange}
                 rows="4"
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 placeholder="Describe las notas de cata y el proceso artesanal..."
               ></textarea>
             </div>
@@ -186,7 +186,7 @@ const ProductCreatePage = () => {
                   value={product.price}
                   onChange={handleChange}
                   placeholder="0.00"
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -200,7 +200,7 @@ const ProductCreatePage = () => {
                   value={product.countInStock}
                   onChange={handleChange}
                   placeholder="0"
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
@@ -238,7 +238,7 @@ const ProductCreatePage = () => {
                       ? "Imagen Secundaria Tarjeta"
                       : "Imagen Producto (Fondo)"}
                 </label>
-                <div className="relative group border-2 border-dashed border-brand-dark/10 rounded-sm p-4 hover:border-brand-orange transition-colors">
+                <div className="relative group border-2 border-dashed border-brand-dark/10 rounded-sm p-4 hover:border-brand-clay transition-colors">
                   <input
                     type="file"
                     name={imgKey}
@@ -247,7 +247,7 @@ const ProductCreatePage = () => {
                   />
                   <div className="text-center space-y-2">
                     <Wine
-                      className={`mx-auto ${images[imgKey] ? "text-brand-orange" : "text-brand-dark/20"}`}
+                      className={`mx-auto ${images[imgKey] ? "text-brand-clay" : "text-brand-dark/20"}`}
                       size={24}
                     />
                     <p className="text-[10px] text-brand-dark/60 font-medium">
@@ -263,7 +263,7 @@ const ProductCreatePage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-orange transition-all shadow-xl disabled:opacity-50"
+              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-xl disabled:opacity-50"
             >
               {loading ? (
                 "Creando..."

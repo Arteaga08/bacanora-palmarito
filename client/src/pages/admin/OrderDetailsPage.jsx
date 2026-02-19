@@ -158,7 +158,7 @@ const OrderDetailsPage = () => {
                       ${item.price?.toLocaleString("es-MX")}
                     </p>
                     {/* 👇 SUB-TOTAL POR ITEM AGREGADO */}
-                    <p className="text-[9px] font-bold text-brand-orange mt-1 uppercase tracking-tighter">
+                    <p className="text-[9px] font-bold text-brand-clay mt-1 uppercase tracking-tighter">
                       Subt: $
                       {(item.price * item.quantity).toLocaleString("es-MX")}
                     </p>
@@ -198,7 +198,7 @@ const OrderDetailsPage = () => {
                 <span className="text-lg font-serif font-bold text-brand-dark uppercase tracking-tighter">
                   Total Pagado
                 </span>
-                <span className="text-2xl font-serif font-bold text-brand-orange">
+                <span className="text-2xl font-serif font-bold text-brand-clay">
                   ${order.totals?.total?.toLocaleString("es-MX")}
                 </span>
               </div>
@@ -238,7 +238,7 @@ const OrderDetailsPage = () => {
                       setLocalCarrier(e.target.value);
                       setIsCustomCarrier(e.target.value === "Otro");
                     }}
-                    className="w-full p-2.5 bg-brand-dark/5 border border-brand-dark/10 rounded-sm text-xs font-bold uppercase tracking-widest outline-none appearance-none focus:border-brand-orange"
+                    className="w-full p-2.5 bg-brand-dark/5 border border-brand-dark/10 rounded-sm text-xs font-bold uppercase tracking-widest outline-none appearance-none focus:border-brand-clay"
                   >
                     <option value="">Seleccionar...</option>
                     {CARRIER_OPTIONS.map((opt) => (
@@ -259,7 +259,7 @@ const OrderDetailsPage = () => {
                   id="customCarrier"
                   type="text"
                   placeholder="Nombre de paquetería"
-                  className="w-full p-2.5 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-orange animate-in slide-in-from-top-1"
+                  className="w-full p-2.5 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay animate-in slide-in-from-top-1"
                 />
               )}
               <div>
@@ -271,13 +271,13 @@ const OrderDetailsPage = () => {
                   placeholder="Tracking #"
                   value={localTracking}
                   onChange={(e) => setLocalTracking(e.target.value)}
-                  className="w-full p-2.5 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-orange outline-none"
+                  className="w-full p-2.5 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none"
                 />
               </div>
               <button
                 onClick={handleUpdateTracking}
                 disabled={updating || !hasChanges}
-                className={`w-full py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm transition-all border flex items-center justify-center gap-2 ${!hasChanges ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-brand-dark text-white hover:bg-brand-orange shadow-lg"}`}
+                className={`w-full py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm transition-all border flex items-center justify-center gap-2 ${!hasChanges ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-brand-dark text-white hover:bg-brand-clay shadow-lg"}`}
               >
                 {updating ? (
                   "Actualizando..."
@@ -304,7 +304,7 @@ const OrderDetailsPage = () => {
                 <div className="flex items-center gap-2 text-[11px] text-brand-dark/60 mt-2 font-medium">
                   <Mail size={12} /> {order.customer?.email}
                 </div>
-                <div className="flex items-center gap-2 text-[11px] text-brand-orange mt-2 font-bold">
+                <div className="flex items-center gap-2 text-[11px] text-brand-clay mt-2 font-bold">
                   <Smartphone size={12} /> {order.customer?.phone}
                 </div>
               </div>

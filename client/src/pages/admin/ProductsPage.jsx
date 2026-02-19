@@ -89,14 +89,14 @@ const ProductsPage = () => {
             <input
               type="text"
               placeholder="Buscar bacanora..."
-              className="pl-9 pr-4 py-2 text-sm border border-brand-dark/10 rounded-sm outline-none focus:border-brand-orange w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm border border-brand-dark/10 rounded-sm outline-none focus:border-brand-clay w-full sm:w-64"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Link
             to="/admin/products/new"
-            className="bg-brand-dark text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-orange transition-all shadow-lg active:scale-95"
+            className="bg-brand-dark text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-clay transition-all shadow-lg active:scale-95"
           >
             <Plus size={16} /> Nuevo Producto
           </Link>
@@ -189,7 +189,7 @@ const ProductsPage = () => {
                       <div className="flex justify-end gap-1">
                         <Link
                           to={`/admin/products/edit/${product._id}`}
-                          className="p-2 text-brand-dark/40 hover:text-brand-orange hover:bg-brand-orange/5 rounded-full transition-all"
+                          className="p-2 text-brand-dark/40 hover:text-brand-clay hover:bg-brand-clay/5 rounded-full transition-all"
                           title="Editar Ficha"
                         >
                           <Edit3 size={16} />

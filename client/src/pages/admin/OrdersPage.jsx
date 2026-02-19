@@ -78,7 +78,7 @@ const OrdersPage = () => {
           <input
             type="text"
             placeholder="Buscar cliente o # orden..."
-            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-brand-dark/10 rounded-sm focus:border-brand-orange outline-none transition-all"
+            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-brand-dark/10 rounded-sm focus:border-brand-clay outline-none transition-all"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -146,7 +146,7 @@ const OrdersPage = () => {
                       <div className="text-[10px] text-brand-dark/40 flex items-center gap-1 truncate max-w-37.5">
                         <Mail size={10} /> {order.customer?.email}
                       </div>
-                      <div className="text-[10px] text-brand-orange font-bold flex items-center gap-1">
+                      <div className="text-[10px] text-brand-clay font-bold flex items-center gap-1">
                         <Smartphone size={10} /> {order.customer?.phone}
                       </div>
                     </td>
@@ -179,7 +179,7 @@ const OrdersPage = () => {
                     <td className="px-6 py-4 text-right">
                       <Link
                         to={`/admin/orders/${order._id}`}
-                        className="inline-flex p-2 text-brand-dark/40 hover:text-brand-orange hover:bg-brand-orange/5 rounded-full transition-all"
+                        className="inline-flex p-2 text-brand-dark/40 hover:text-brand-clay hover:bg-brand-clay/5 rounded-full transition-all"
                       >
                         <Edit3 size={18} />
                       </Link>

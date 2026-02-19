@@ -101,7 +101,7 @@ const InventoryPage = () => {
                     onChange={(e) =>
                       handleStockChange(product._id, e.target.value)
                     }
-                    className="w-full text-center p-2 border border-brand-dark/10 rounded-sm font-mono text-sm focus:border-brand-orange outline-none"
+                    className="w-full text-center p-2 border border-brand-dark/10 rounded-sm font-mono text-sm focus:border-brand-clay outline-none"
                   />
                 </td>
                 <td className="px-6 py-4 text-right">
@@ -111,7 +111,7 @@ const InventoryPage = () => {
                     className={`p-2 rounded-sm transition-all ${
                       updating === product._id
                         ? "text-brand-dark/20"
-                        : "text-brand-dark hover:text-brand-orange"
+                        : "text-brand-dark hover:text-brand-clay"
                     }`}
                   >
                     <Save
