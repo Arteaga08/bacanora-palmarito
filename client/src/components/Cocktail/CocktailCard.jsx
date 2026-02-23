@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
+
 const CocktailCard = ({ cocktail }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -33,7 +36,7 @@ const CocktailCard = ({ cocktail }) => {
           {/* Bloque de texto igual a los productos */}
           <div className="p-6 flex flex-col bg-brand-beige border-t border-brand-black/15">
             <p className="font-brand-script text-xl text-brand-clay mb-1 opacity-90 leading-none">
-              Signature
+              El Recetario
             </p>
             <h3 className="font-brand-serif text-2xl text-brand-black uppercase tracking-tighter leading-none">
               {cocktail.name}
@@ -47,9 +50,11 @@ const CocktailCard = ({ cocktail }) => {
             <h3 className="font-brand-serif text-2xl text-brand-beige uppercase leading-tight tracking-tighter">
               {cocktail.name}
             </h3>
-            <span className="font-brand-script text-2xl text-brand-clay">
-              B.
-            </span>
+            <img
+              src={logoUrl}
+              alt="Logo Bacanora"
+              className="w-10 h-10 object-contain mt-1"
+            />
           </div>
 
           <div className="grow">

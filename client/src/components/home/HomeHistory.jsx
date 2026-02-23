@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
+
 const HomeHistory = () => {
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 40 },
@@ -102,7 +105,7 @@ const HomeHistory = () => {
             className="absolute -bottom-8 -left-6 md:-bottom-12 md:-left-12 w-32 h-32 md:w-56 md:h-56 text-brand-clay mix-blend-multiply z-20 pointer-events-none"
           >
             <img
-              src="https://cdn-icons-png.flaticon.com/512/815/815553.png"
+              src={logoUrl}
               alt="Sello Puma 1"
               className="w-full h-full object-contain"
             />
@@ -169,7 +172,7 @@ const HomeHistory = () => {
               className="absolute -top-6 -right-6 md:-top-10 md:-right-10 w-28 h-28 md:w-44 md:h-44 text-brand-clay mix-blend-multiply z-20 pointer-events-none"
             >
               <img
-                src="https://cdn-icons-png.flaticon.com/512/815/815553.png"
+                src={logoUrl}
                 alt="Sello Puma 2"
                 className="w-full h-full object-contain"
               />

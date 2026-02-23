@@ -6,7 +6,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link
-      to={`/producto/${product.slug}`}
+      to={`/producto/${product._id}`}
       /* 1. Quitamos el padding de aquí para que la imagen toque los bordes */
       /* Mantenemos los bordes sutiles para la separación en móvil */
       className="group block w-full border-b border-brand-black/25 md:border-b-0 md:border-r md:last:border-r-0 last:border-b-0 bg-brand-beige"

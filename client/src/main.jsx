@@ -40,13 +40,14 @@ const router = createBrowserRouter([
       { path: "/", element: <HomePage /> },
       { path: "/tienda", element: <ShopPage /> },
       { path: "/historia", element: <HistoryPage /> },
-      { path: "/producto/:slug", element: <ProductDetailPage /> },
+
       { path: "/mixologia", element: <MixologyPage /> },
       { path: "/mixologia/:slug", element: <RecipePage /> },
       { path: "/carrito", element: <CartPage /> },
       { path: "/checkout", element: <CheckoutPage /> },
     ],
   },
+  { path: "/producto/:id", element: <ProductDetailPage /> },
 
   // RUTAS DE ADMIN
   {

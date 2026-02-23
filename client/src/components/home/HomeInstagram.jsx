@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
 // Datos de prueba
 const initialInstagramFeed = [
   {
@@ -97,9 +99,11 @@ const HomeInstagram = () => {
       </div>
 
       {/* ESPACIO COMPACTO */}
-      <div className="pt-8 md:pt-10 mb-8 md:mb-10">
+      {/* CABECERA (Con espacios ajustados para respirar en móvil) */}
+      <div className="pt-12 md:pt-32 mb-12 md:mb-16">
         <div className="w-full max-w-360 mx-auto px-6 relative">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
+            {/* 1. TÍTULO: Quitamos el -mt-8 para que baje y respire del borde superior */}
             <div className="flex flex-col items-start justify-start w-full md:w-auto z-10">
               <h2 className="font-brand-serif text-5xl md:text-7xl lg:text-8xl uppercase tracking-tighter text-brand-black leading-none">
                 Sobre
@@ -109,23 +113,27 @@ const HomeInstagram = () => {
               </h2>
             </div>
 
-            <div className="absolute top-0 right-6 md:relative md:top-auto md:right-auto flex flex-col items-end md:items-start gap-3 md:pb-2 shrink-0 z-20">
-              <div className="w-10 h-10 md:w-14 md:h-14 border border-brand-black/20 rounded-full flex items-center justify-center bg-brand-beige">
-                <span className="font-brand-sans text-[7px] md:text-[8px] uppercase tracking-widest text-brand-black/60">
-                  IG
-                </span>
+            {/* 2. BLOQUE DERECHO: Bajamos un poco con top-2 y le damos gap-2 para separar logo de texto */}
+            <div className="absolute top-2 right-6 md:relative md:top-auto md:right-auto flex flex-col items-end md:items-start gap-1 md:gap-0 md:pb-2 shrink-0 z-20">
+              {/* 3. LOGO: Limpio, sin círculo de fondo ni bordes (como en tu captura) */}
+              <div className="w-10 h-10 md:w-16 md:h-16 flex items-center justify-end md:justify-center overflow-hidden">
+                <img
+                  src={logoUrl}
+                  alt="Bacanora Logo"
+                  className="w-8 md:w-10 object-contain grayscale opacity-60"
+                />
               </div>
+
+              {/* 4. LINK */}
               <a
                 href="https://www.instagram.com/bacanorapalmarito/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-brand-sans uppercase tracking-[0.2em] text-[8px] md:text-[9px] text-brand-black text-right md:text-left leading-tight group"
               >
-                <span className="underline decoration-brand-clay/40 underline-offset-4 group-hover:decoration-brand-clay transition-colors">
-                  SÍGUENOS EN
-                </span>
+                <span>SÍGUENOS EN</span>
                 <br />
-                <span className="font-brand-script text-base md:text-lg normal-case first-letter:uppercase block mt-1">
+                <span className="font-brand-script text-base md:text-lg normal-case first-letter:uppercase block underline decoration-brand-clay/40 underline-offset-4 group-hover:decoration-brand-clay transition-colors mt-1">
                   @palmarito
                 </span>
               </a>
@@ -133,7 +141,8 @@ const HomeInstagram = () => {
           </div>
         </div>
 
-        <div className="w-full max-w-360 mx-auto px-6 mt-6 md:mt-8">
+        {/* 5. PÁRRAFO DESCRIPTIVO: Cambiamos mt-6 por mt-12 para separarlo de "Nosotros" */}
+        <div className="w-full max-w-360 mx-auto px-6 mt-12 md:mt-10">
           <p className="font-brand-sans text-[10px] md:text-xs text-brand-black/70 uppercase tracking-widest leading-relaxed max-w-lg border-l border-brand-clay pl-4">
             Compartimos el día a día de nuestra destilería, la tierra de Sonora
             y el arte detrás de cada gota de nuestro Bacanora. Únete a nuestra

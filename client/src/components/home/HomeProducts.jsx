@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import ProductCard from "../products/ProductCard";
 import clientAxios from "../../services/axiosConfig";
 
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
+
 const HomeProducts = () => {
   const [products, setProducts] = useState([]);
 
@@ -21,14 +24,23 @@ const HomeProducts = () => {
   return (
     <section className="bg-brand-beige pb-0">
       {/* 0. DIVISIÓN EDITORIAL */}
-      <div className="w-full border-t border-brand-black/10"></div>
+      <div className="w-full relative z-30 flex items-center">
+        <div className="w-full border-t border-brand-black/20"></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center bg-brand-beige ">
+          <img
+            src={logoUrl}
+            alt="Logo"
+            className="w-8 object-contain opacity-40 grayscale"
+          />
+        </div>
+      </div>
 
-      <div className="pt-20 md:pt-32">
+      <div className="pt-30 md:pt-32">
         {/* 1. EL TÍTULO (Layout Mobile: Título Izquierda, Logo/Link Derecha) */}
         <div className="w-full max-w-360 mx-auto px-6 mb-8 md:mb-12 relative">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
             {/* Título Dinámico (Lo primero que se ve en la izquierda) */}
-            <div className="flex flex-col items-start justify-start w-full md:w-auto z-10">
+            <div className="flex flex-col items-start justify-start w-full md:w-auto z-10 -mt-8 md:mt-0">
               <h2 className="font-brand-serif text-5xl md:text-8xl lg:text-9xl uppercase tracking-tighter text-brand-black leading-none">
                 Nuestra
               </h2>
@@ -38,12 +50,14 @@ const HomeProducts = () => {
             </div>
 
             {/* Bloque Logo y Link (Se pasa a la derecha en móvil) */}
-            <div className="absolute top-0 right-6 md:relative md:top-auto md:right-auto flex flex-col items-end md:items-start gap-4 md:pb-2 shrink-0 z-20">
+            <div className="absolute top-0 right-6 md:relative md:top-auto md:right-auto flex flex-col items-end md:items-start gap-0 md:pb-2 shrink-0 z-20">
               {/* Logo */}
-              <div className="w-12 h-12 md:w-16 md:h-16 border border-brand-black/20 rounded-full flex items-center justify-center bg-brand-beige">
-                <span className="font-brand-sans text-[8px] uppercase tracking-widest text-brand-black/60">
-                  Logo
-                </span>
+              <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-brand-beige overflow-hidden">
+                <img
+                  src={logoUrl}
+                  alt="Bacanora Logo"
+                  className="w-8 md:w-10 object-contain"
+                />
               </div>
 
               {/* Link con "Bacanora" en BallPoint */}
@@ -51,12 +65,12 @@ const HomeProducts = () => {
                 to="/tienda"
                 className="font-brand-sans uppercase tracking-[0.2em] text-[8px] md:text-[10px] text-brand-clay text-right md:text-left leading-tight group"
               >
-                <span className="underline decoration-brand-clay/40 underline-offset-4 group-hover:decoration-brand-clay transition-colors">
-                  CONOCE EL
-                </span>
+                {/* Texto superior limpio */}
+                <span>CONOCE</span>
                 <br />
-                <span className="font-brand-script text-lg md:text-xl normal-case first-letter:uppercase block mt-1">
-                  Bacanora
+                {/* El subrayado ahora firma "EL Bacanora" */}
+                <span className="font-brand-script text-lg md:text-xl normal-case first-letter:uppercase block underline decoration-brand-clay/40 underline-offset-4 group-hover:decoration-brand-clay transition-colors">
+                  EL Bacanora
                 </span>
               </Link>
             </div>

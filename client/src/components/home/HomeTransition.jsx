@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
+
 const HomeTransition = () => {
   const containerRef = useRef(null);
 
@@ -21,10 +24,13 @@ const HomeTransition = () => {
     >
       {/* 1. LOGO (Esquina Superior Izquierda) */}
       <div className="absolute top-8 left-6 md:top-12 md:left-12 z-20 flex flex-col gap-4">
-        <div className="w-12 h-12 md:w-16 md:h-16 border border-brand-beige/20 rounded-full flex items-center justify-center">
-          <span className="font-brand-sans text-[8px] uppercase tracking-widest text-brand-beige/60">
-            Logo
-          </span>
+        <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
+          <img
+            src={logoUrl}
+            alt="Logo Bacanora"
+            /* Eliminamos invert, sepia, grayscale y opacity */
+            className="w-10 md:w-12 object-contain"
+          />
         </div>
         {/* Espacio extra por si quieres bajar el texto 'CONOCE EL BACANORA' aquí también */}
       </div>
