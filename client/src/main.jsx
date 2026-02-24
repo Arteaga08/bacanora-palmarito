@@ -38,6 +38,7 @@ import ProductEditPage from "./pages/admin/ProductEditPage";
 import AdminMixologyPage from "./pages/admin/AdminMixologyPage";
 import AdminRecipeCreatePage from "./pages/admin/AdminRecipeCreatePage";
 import AdminRecipeEditPage from "./pages/admin/AdminRecipeEditPage";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 const GlobalWrapper = () => {
   return (
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
           { path: "/mixologia/:slug", element: <RecipePage /> },
           { path: "/carrito", element: <CartPage /> },
           { path: "/checkout", element: <CheckoutPage /> },
+          { path:"/checkout/success", element: <OrderSuccessPage /> },
         ],
       },
       { path: "/producto/:id", element: <ProductDetailPage /> },

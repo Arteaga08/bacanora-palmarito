@@ -277,7 +277,7 @@ const OrderDetailsPage = () => {
               <button
                 onClick={handleUpdateTracking}
                 disabled={updating || !hasChanges}
-                className={`w-full py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm transition-all border flex items-center justify-center gap-2 ${!hasChanges ? "bg-emerald-50 text-emerald-600 border-emerald-200" : "bg-brand-dark text-white hover:bg-brand-clay shadow-lg"}`}
+                className={`w-full py-3 text-[10px] font-bold uppercase tracking-[0.2em] rounded-sm transition-all border flex items-center justify-center gap-2 ${!hasChanges ? "bg-brand-clay text-emerald-200 border-emerald-200" : "bg-brand-dark text-white hover:bg-brand-dark shadow-lg"}`}
               >
                 {updating ? (
                   "Actualizando..."
