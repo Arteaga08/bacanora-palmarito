@@ -4,14 +4,22 @@ import { ListIcon, ShoppingCartSimpleIcon } from "@phosphor-icons/react";
 import { useScroll } from "../../hooks/useScroll";
 import MobileMenu from "./MobileMenu";
 
+// 🌟 1. IMPORTAMOS EL MODAL Y EL CONTEXTO
+import CartModal from "../home/CartModal";
+import { useCart } from "../../context/CartContext"; // Verifica que la ruta a tu context sea correcta
+
 const Navbar = () => {
   const isScrolled = useScroll(50);
   const [isOpen, setIsOpen] = useState(false);
 
+  // 🌟 2. ESTADO DEL MODAL Y DATOS DEL CARRITO
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { totalItems } = useCart(); // Extraemos la cantidad de productos
+
   const navLinks = [
     { name: "Nuestra Historia", path: "/historia" },
-    { name: "Cócteles", path: "/mixologia" },
     { name: "Bacanora", path: "/tienda" },
+    { name: "Cócteles", path: "/mixologia" },
   ];
 
   return (
@@ -69,24 +77,32 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* CARRITO */}
+          {/* 🌟 3. CARRITO MODIFICADO */}
           <div
             className={`flex justify-end grow basis-0 py-6 border-l border-inherit transition-colors ${
               isScrolled ? "text-brand-beige" : "text-brand-black"
             }`}
           >
-            <Link to="/carrito" className="relative group">
+            {/* Cambiamos el Link por un button para abrir el Modal */}
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative group focus:outline-none"
+            >
               <ShoppingCartSimpleIcon size={20} strokeWidth={1} />
-              <span
-                className={`absolute -top-1 -right-2 text-[8px] font-brand-sans w-4 h-4 rounded-full flex items-center justify-center transition-colors ${
-                  isScrolled
-                    ? "bg-brand-beige text-brand-clay"
-                    : "bg-brand-clay text-brand-beige"
-                }`}
-              >
-                0
-              </span>
-            </Link>
+
+              {/* Solo mostramos la burbuja si hay algo en el carrito */}
+              {totalItems > 0 && (
+                <span
+                  className={`absolute -top-1 -right-2 text-[8px] font-brand-sans w-4 h-4 rounded-full flex items-center justify-center transition-colors shadow-sm ${
+                    isScrolled
+                      ? "bg-brand-beige text-brand-clay"
+                      : "bg-brand-clay text-brand-beige"
+                  }`}
+                >
+                  {totalItems}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </nav>
@@ -97,6 +113,9 @@ const Navbar = () => {
         onClose={() => setIsOpen(false)}
         navLinks={navLinks}
       />
+
+      {/* 🌟 4. RENDERIZAMOS EL MODAL AQUÍ */}
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };

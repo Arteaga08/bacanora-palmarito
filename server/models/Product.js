@@ -38,6 +38,11 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    volume: {
+      type: String,
+      required: true,
+      default: "750 ML",
+    },
     countInStock: {
       type: Number,
       required: true,

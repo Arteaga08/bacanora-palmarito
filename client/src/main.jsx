@@ -1,7 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  ScrollRestoration,
+} from "react-router-dom";
 import "./index.css";
+
+// 🌟 1. IMPORTAMOS EL CEREBRO DEL CARRITO
+import { CartProvider } from "./context/CartContext";
 
 // Layout
 import MainLayout from "./components/layout/MainLayout";
@@ -31,68 +39,84 @@ import AdminMixologyPage from "./pages/admin/AdminMixologyPage";
 import AdminRecipeCreatePage from "./pages/admin/AdminRecipeCreatePage";
 import AdminRecipeEditPage from "./pages/admin/AdminRecipeEditPage";
 
+const GlobalWrapper = () => {
+  return (
+    <>
+      <ScrollRestoration />
+      <Outlet />
+    </>
+  );
+};
+
 const router = createBrowserRouter([
-  // RUTAS PÚBLICAS
   {
-    path: "/",
-    element: <MainLayout />,
+    element: <GlobalWrapper />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/tienda", element: <ShopPage /> },
-      { path: "/historia", element: <HistoryPage /> },
+      // RUTAS PÚBLICAS
+      {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+          { path: "/", element: <HomePage /> },
+          { path: "/tienda", element: <ShopPage /> },
+          { path: "/historia", element: <HistoryPage /> },
+          { path: "/mixologia", element: <MixologyPage /> },
+          { path: "/mixologia/:slug", element: <RecipePage /> },
+          { path: "/carrito", element: <CartPage /> },
+          { path: "/checkout", element: <CheckoutPage /> },
+        ],
+      },
+      { path: "/producto/:id", element: <ProductDetailPage /> },
 
-      { path: "/mixologia", element: <MixologyPage /> },
-      { path: "/mixologia/:slug", element: <RecipePage /> },
-      { path: "/carrito", element: <CartPage /> },
-      { path: "/checkout", element: <CheckoutPage /> },
-    ],
-  },
-  { path: "/producto/:id", element: <ProductDetailPage /> },
-
-  // RUTAS DE ADMIN
-  {
-    path: "/admin",
-    element: <AdminLayout />, // 👈 El "Padre" que tiene el Sidebar
-    children: [
+      // RUTAS DE ADMIN
       {
-        path: "dashboard", // ➝ /admin/dashboard
-        element: <AdminDashBoard />,
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          {
+            path: "dashboard",
+            element: <AdminDashBoard />,
+          },
+          {
+            path: "orders",
+            element: <OrdersPage />,
+          },
+          {
+            path: "orders/:id",
+            element: <OrderDetailsPage />,
+          },
+          {
+            path: "products",
+            element: <ProductsPage />,
+          },
+          { path: "products/new", element: <ProductCreatePage /> },
+          { path: "products/edit/:id", element: <ProductEditPage /> },
+          { path: "mixology", element: <AdminMixologyPage /> },
+          { path: "mixology/new", element: <AdminRecipeCreatePage /> },
+          { path: "mixology/edit/:id", element: <AdminRecipeEditPage /> },
+          {
+            path: "inventory",
+            element: <InventoryPage />,
+          },
+          {
+            path: "logs",
+            element: <AuditLogPage />,
+          },
+        ],
       },
       {
-        path: "orders", // ➝ /admin/orders (¡NUEVA RUTA!) 🚚
-        element: <OrdersPage />,
-      },
-      {
-        path: "orders/:id",
-        element: <OrderDetailsPage />,
-      },
-      {
-        path: "products",
-        element: <ProductsPage />,
-      },
-      { path: "products/new", element: <ProductCreatePage /> },
-      { path: "products/edit/:id", element: <ProductEditPage /> },
-      { path: "mixology", element: <AdminMixologyPage /> },
-      { path: "mixology/new", element: <AdminRecipeCreatePage /> },
-      { path: "mixology/edit/:id", element: <AdminRecipeEditPage /> },
-      {
-        path: "inventory",
-        element: <InventoryPage />,
-      },
-      {
-        path: "logs",
-        element: <AuditLogPage />,
+        path: "/admin/login",
+        element: <LoginPage />,
       },
     ],
-  },
-  {
-    path: "/admin/login",
-    element: <LoginPage />,
   },
 ]);
 
+// 🌟 2. ENVOLVEMOS TU APP ENTERA CON EL CART PROVIDER
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
   </React.StrictMode>,
 );

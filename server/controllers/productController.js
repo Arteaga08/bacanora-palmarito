@@ -25,6 +25,7 @@ export const createProduct = asyncHandler(async (req, res) => {
       countInStock,
       slug,
       ingredients,
+      volume, // 👈 Extraemos el volumen
     } = req.body;
 
     // Validación ultra-segura de imágenes
@@ -53,6 +54,7 @@ export const createProduct = asyncHandler(async (req, res) => {
       ingredients: ingredients ? JSON.parse(ingredients) : [],
       price: price || 0,
       countInStock: countInStock || 0,
+      volume: volume || "750 ML", // 👈 Lo guardamos (con default a 750 ML)
       isAvailable: true,
     });
 
@@ -78,6 +80,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     isAvailable,
     ingredients,
     slug,
+    volume, // 👈 Extraemos el volumen
   } = req.body;
 
   const product = await Product.findById(req.params.id);
@@ -110,6 +113,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
       countInStock !== undefined ? countInStock : product.countInStock;
     product.isAvailable =
       isAvailable !== undefined ? isAvailable : product.isAvailable;
+    product.volume = volume || product.volume; // 👈 Lo actualizamos si viene en el body
 
     if (ingredients) product.ingredients = JSON.parse(ingredients);
 
@@ -150,7 +154,7 @@ export const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    const productName = product.name; // Guardamos el nombre antes de borrarlo
+    const productName = product.name;
 
     await product.deleteOne();
 
@@ -228,13 +232,11 @@ export const archiveProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    // Cambiamos el estado a inactivo
     product.isActive = false;
     const archivedProduct = await product.save();
 
     // 📝 REGISTRO EN AUDITORÍA
     if (global.AuditLog) {
-      // Verificamos si tienes el modelo de Auditoría
       await AuditLog.create({
         adminId: req.user._id,
         action: "ARCHIVE_PRODUCT",

@@ -79,7 +79,7 @@ const CocktailCard = ({ cocktail }) => {
           </div>
 
           <Link
-            to={`/mixologia/${cocktail.slug}`}
+            to={`/mixologia/${cocktail._id}`}
             className="mt-6 font-brand-sans text-[9px] uppercase tracking-[0.4em] text-brand-beige/50 border-t border-brand-beige/10 pt-6 hover:text-brand-clay transition-colors text-center"
           >
             Ver Preparación Completa

@@ -84,7 +84,7 @@ const AdminMixologyPage = () => {
           </div>
           <Link
             to="/admin/mixology/new"
-            className="bg-brand-clay text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-dark transition-all shadow-lg"
+            className="bg-brand-clay hover:bg-brand-clay-700 text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-dark transition-all shadow-lg"
           >
             <Plus size={16} /> Nueva Receta
           </Link>

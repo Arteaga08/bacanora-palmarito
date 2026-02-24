@@ -113,7 +113,7 @@ const HistoryPage = () => {
               del desierto
             </span>
           </h1>
-          <p className="font-brand-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-brand-black/60 max-w-md mx-auto mt-8 md:mt-12 leading-relaxed">
+          <p className="font-brand-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-brand-black/60 max-w-lg mx-auto mt-16 md:mt-20 leading-relaxed border-l border-r border-brand-clay/30 px-6">
             Una historia de resistencia, clandestinidad y el carácter indomable
             del agave pacífica.
           </p>

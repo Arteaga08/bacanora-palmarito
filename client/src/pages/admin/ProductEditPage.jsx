@@ -17,11 +17,11 @@ const slugify = (text) => {
     .toString()
     .toLowerCase()
     .trim()
-    .normalize("NFD") // Descompone caracteres con acentos
-    .replace(/[\u0300-\u036f]/g, "") // Elimina los acentos
-    .replace(/\s+/g, "-") // Reemplaza espacios por guiones
-    .replace(/[^\w-]+/g, "") // Elimina todo lo que no sea letra, número o guion
-    .replace(/--+/g, "-"); // Evita guiones dobles
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
 };
 
 const ProductEditPage = () => {
@@ -30,6 +30,7 @@ const ProductEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  // 👇 1. Agregamos "volume" al estado inicial
   const [product, setProduct] = useState({
     name: "",
     price: "",
@@ -38,6 +39,7 @@ const ProductEditPage = () => {
     countInStock: "",
     slug: "",
     ingredients: "",
+    volume: "",
   });
 
   const [images, setImages] = useState({
@@ -65,6 +67,7 @@ const ProductEditPage = () => {
           countInStock: data.countInStock,
           slug: data.slug,
           ingredients: JSON.stringify(data.ingredients),
+          volume: data.volume || "750 ML", // 👇 2. Recuperamos el volumen de la BD
         });
         setPreviews({
           primary: data.images?.cardPrimary,
@@ -235,7 +238,9 @@ const ProductEditPage = () => {
             <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/60 flex items-center gap-2 border-b pb-4 mb-6">
               <DollarSign size={14} /> Precios y Stock
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {/* 👇 3. Ajustamos el grid a 4 columnas en Desktop para que quepa el volumen */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
                   Precio (MXN)
@@ -262,6 +267,23 @@ const ProductEditPage = () => {
                   className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
+
+              {/* 👇 4. Nuevo Input de Volumen */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                  Volumen
+                </label>
+                <input
+                  required
+                  type="text"
+                  name="volume"
+                  value={product.volume}
+                  onChange={handleChange}
+                  placeholder="Ej. 750 ML"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay uppercase"
+                />
+              </div>
+
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
                   Categoría

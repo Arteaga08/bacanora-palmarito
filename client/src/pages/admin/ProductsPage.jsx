@@ -96,7 +96,7 @@ const ProductsPage = () => {
           </div>
           <Link
             to="/admin/products/new"
-            className="bg-brand-dark text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-clay transition-all shadow-lg active:scale-95"
+            className="bg-brand-clay hover:bg-red-700 text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95"
           >
             <Plus size={16} /> Nuevo Producto
           </Link>

@@ -8,6 +8,12 @@ import {
 } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// =========================================
+// ASSETS
+// =========================================
+const logoUrl =
+  "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
+
 const MobileMenu = ({ isOpen, onClose, navLinks }) => {
   // DIRECCIÓN: DE IZQUIERDA A DERECHA
   const menuVariants = {
@@ -50,9 +56,9 @@ const MobileMenu = ({ isOpen, onClose, navLinks }) => {
           variants={menuVariants}
           className="fixed inset-0 bg-brand-beige text-brand-black z-60 flex flex-col h-screen overflow-hidden"
         >
-          {/* HEADER: Botón X (Izq) y Logo Círculo (Der) */}
+          {/* HEADER: Botón X (Izq) y Logo (Der) */}
           <div className="flex justify-between items-center px-6 py-6 border-b border-brand-black/5">
-            {/* IZQUIERDA: Botón Cerrar (Transformación con Phosphor X) */}
+            {/* IZQUIERDA: Botón Cerrar */}
             <button
               onClick={onClose}
               className="text-brand-black hover:text-brand-clay transition-colors"
@@ -63,16 +69,17 @@ const MobileMenu = ({ isOpen, onClose, navLinks }) => {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* Usamos weight="thin" en lugar de strokeWidth */}
                 <X size={28} weight="thin" />
               </motion.div>
             </button>
 
-            {/* DERECHA: Logo Placeholder (Círculo Rojo/Clay) */}
-            <div className="w-12 h-12 bg-brand-clay rounded-full flex items-center justify-center shadow-md">
-              <span className="text-[8px] text-brand-beige font-bold uppercase tracking-widest">
-                Logo
-              </span>
+            {/* DERECHA: Logo Real Palmarito */}
+            <div className="flex items-center justify-center">
+              <img
+                src={logoUrl}
+                alt="Palmarito Logo"
+                className="w-10 object-contain opacity-80"
+              />
             </div>
           </div>
 
@@ -88,12 +95,9 @@ const MobileMenu = ({ isOpen, onClose, navLinks }) => {
                   onClick={onClose}
                   className="flex flex-col items-center group text-center"
                 >
-                  {/* "Bacanora" en Script con Tracking Amplio */}
                   <span className="font-brand-script text-2xl text-brand-clay mb-1 opacity-90 tracking-[0.2em]">
-                    Bacanora
+                    Palmarito
                   </span>
-
-                  {/* TÍTULO PRINCIPAL */}
                   <span className="text-4xl md:text-5xl uppercase tracking-widest font-brand-serif text-brand-black group-hover:text-brand-clay transition-colors leading-none">
                     {link.name}
                   </span>
@@ -131,6 +135,8 @@ const MobileMenu = ({ isOpen, onClose, navLinks }) => {
 
             {/* BLOQUE DE IDENTIDAD */}
             <div className="flex flex-col items-center opacity-40">
+              {/* Mini logo sobre el nombre */}
+              <img src={logoUrl} alt="Sello" className="w-6 mb-2 opacity-60" />
               <span className="font-brand-script text-3xl leading-none text-brand-clay">
                 Palmarito
               </span>

@@ -16,18 +16,18 @@ const slugify = (text) => {
     .toString()
     .toLowerCase()
     .trim()
-    .normalize("NFD") // Descompone caracteres con acentos
-    .replace(/[\u0300-\u036f]/g, "") // Elimina los acentos
-    .replace(/\s+/g, "-") // Reemplaza espacios por guiones
-    .replace(/[^\w-]+/g, "") // Elimina todo lo que no sea letra, número o guion
-    .replace(/--+/g, "-"); // Evita guiones dobles
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-");
 };
 
 const ProductCreatePage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  // Estado para el formulario
+  // Estado para el formulario (AQUÍ AGREGAMOS VOLUME)
   const [product, setProduct] = useState({
     name: "",
     price: "",
@@ -35,7 +35,8 @@ const ProductCreatePage = () => {
     category: "Bacanora",
     countInStock: "",
     slug: "",
-    ingredients: "", // Se enviará como string de JSON
+    ingredients: "",
+    volume: "750 ML", // 👈 Nuevo campo con valor por defecto
   });
 
   // Estado para las imágenes (archivos)
@@ -58,6 +59,7 @@ const ProductCreatePage = () => {
       setProduct({ ...product, [name]: value });
     }
   };
+
   const handleFileChange = (e) => {
     setImages({ ...images, [e.target.name]: e.target.files[0] });
   };
@@ -67,8 +69,9 @@ const ProductCreatePage = () => {
     setLoading(true);
 
     const formData = new FormData();
-    // Agregamos los textos
+    // Agregamos los textos (incluyendo volume)
     Object.keys(product).forEach((key) => formData.append(key, product[key]));
+
     // Agregamos los archivos
     if (images.imagePrimary)
       formData.append("imagePrimary", images.imagePrimary);
@@ -165,16 +168,16 @@ const ProductCreatePage = () => {
                 placeholder="Describe las notas de cata y el proceso artesanal..."
               ></textarea>
             </div>
-
-          
           </div>
 
-          {/* PRECIOS Y STOCK */}
+          {/* PRECIOS, STOCK Y VOLUMEN */}
           <div className="bg-white border border-brand-dark/10 p-8 rounded-sm shadow-sm">
             <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/60 flex items-center gap-2 border-b pb-4 mb-6">
               <DollarSign size={14} /> Valores y Existencias
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {/* Cambiamos de grid-cols-3 a grid-cols-2 en móvil y grid-cols-4 en PC para acomodar el nuevo campo */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
                   Precio (MXN)
@@ -189,6 +192,7 @@ const ProductCreatePage = () => {
                   className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
+
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
                   Stock Inicial
@@ -203,6 +207,23 @@ const ProductCreatePage = () => {
                   className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
+
+              {/* 👇 NUEVO CAMPO DE VOLUMEN AQUÍ */}
+              <div className="space-y-2">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                  Volumen
+                </label>
+                <input
+                  required
+                  type="text"
+                  name="volume"
+                  value={product.volume}
+                  onChange={handleChange}
+                  placeholder="Ej. 750 ML"
+                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay uppercase"
+                />
+              </div>
+
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
                   Categoría
