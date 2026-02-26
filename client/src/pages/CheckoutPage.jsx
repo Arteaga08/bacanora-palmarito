@@ -206,8 +206,11 @@ const CheckoutPage = () => {
           productId: item.productId,
           quantity: item.quantity,
         })),
-        customerNote: formData.references, // 👈 MAPEO DE REFERENCIAS A NOTA DE CLIENTE
+        customerNote: formData.references,
+        legalAgeConfirmed: localStorage.getItem("isAdult") === "true",
       };
+
+      console.log("📦 PAQUETE LISTO PARA EL BACKEND:", payload);
 
       const { data } = await clientAxios.post("/orders", payload);
       setClientSecret(data.clientSecret);

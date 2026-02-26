@@ -16,6 +16,11 @@ const OrderSchema = new mongoose.Schema(
       email: { type: String, required: true },
       phone: { type: String, required: true },
     },
+    legalAgeConfirmed: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
 
     // 🛒 Productos comprados (snapshot inmutable)
     items: [

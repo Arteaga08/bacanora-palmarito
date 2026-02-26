@@ -12,9 +12,15 @@ import { generateOrderReceipt } from "../services/pdfService.js";
    🛒 CREAR ORDEN
    ================================================== */
 export const addOrderItems = asyncHandler(async (req, res) => {
-  console.log("🚀 Iniciando creación de orden...");
+  const { customer, items, shipping, customerNote, legalAgeConfirmed } =
+    req.body;
 
-  const { customer, items, shipping, customerNote } = req.body;
+  if (legalAgeConfirmed !== true && String(legalAgeConfirmed) !== "true") {
+    res.status(400);
+    throw new Error(
+      "Confirmación de mayoría de edad requerida para proceder con la compra."
+    );
+  }
 
   if (!Array.isArray(items) || items.length === 0) {
     res.status(400);
@@ -84,6 +90,7 @@ export const addOrderItems = asyncHandler(async (req, res) => {
           totals: { subtotal, shipping: shippingCost, total, currency: "MXN" },
           shipping,
           customerNote,
+          legalAgeConfirmed: true,
           status: "Pendiente",
         },
       ],
@@ -105,16 +112,13 @@ export const addOrderItems = asyncHandler(async (req, res) => {
       { session },
     );
 
-    // 🔥 ELIMINAMOS EL PASO 5 (RESERVAR STOCK)
-    // Ya no restamos aquí. Esperaremos al Webhook de Stripe.
-
     await session.commitTransaction();
     console.log(
       `✅ Orden ${orderNumber} y registro de pago creados (Stock intacto).`,
     );
   } catch (error) {
     await session.abortTransaction();
-    console.error("❌ Error en la transacción de orden:", error.message);
+    console.error(`❌ Error al crear la orden ${orderNumber}:`, error.message);
     throw error;
   } finally {
     session.endSession();

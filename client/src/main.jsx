@@ -39,10 +39,12 @@ import AdminMixologyPage from "./pages/admin/AdminMixologyPage";
 import AdminRecipeCreatePage from "./pages/admin/AdminRecipeCreatePage";
 import AdminRecipeEditPage from "./pages/admin/AdminRecipeEditPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
+import AgeVerification from "./components/home/AgeVerification";
 
 const GlobalWrapper = () => {
   return (
     <>
+      <AgeVerification />
       <ScrollRestoration />
       <Outlet />
     </>
@@ -65,7 +67,7 @@ const router = createBrowserRouter([
           { path: "/mixologia/:slug", element: <RecipePage /> },
           { path: "/carrito", element: <CartPage /> },
           { path: "/checkout", element: <CheckoutPage /> },
-          { path:"/checkout/success", element: <OrderSuccessPage /> },
+          { path: "/checkout/success", element: <OrderSuccessPage /> },
         ],
       },
       { path: "/producto/:id", element: <ProductDetailPage /> },
