@@ -3,18 +3,15 @@ import { Link } from "react-router-dom";
 import { ListIcon, ShoppingCartSimpleIcon } from "@phosphor-icons/react";
 import { useScroll } from "../../hooks/useScroll";
 import MobileMenu from "./MobileMenu";
-
-// 🌟 1. IMPORTAMOS EL MODAL Y EL CONTEXTO
 import CartModal from "../home/CartModal";
-import { useCart } from "../../context/CartContext"; // Verifica que la ruta a tu context sea correcta
+import { useCart } from "../../context/CartContext";
 
 const Navbar = () => {
   const isScrolled = useScroll(50);
   const [isOpen, setIsOpen] = useState(false);
 
-  // 🌟 2. ESTADO DEL MODAL Y DATOS DEL CARRITO
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const { totalItems } = useCart(); // Extraemos la cantidad de productos
+  // 1. Extraemos tanto totalItems como setIsCartOpen del contexto global
+  const { totalItems, setIsCartOpen } = useCart();
 
   const navLinks = [
     { name: "Nuestra Historia", path: "/historia" },
@@ -77,20 +74,19 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* 🌟 3. CARRITO MODIFICADO */}
+          {/* CARRITO */}
           <div
             className={`flex justify-end grow basis-0 py-6 border-l border-inherit transition-colors ${
               isScrolled ? "text-brand-beige" : "text-brand-black"
             }`}
           >
-            {/* Cambiamos el Link por un button para abrir el Modal */}
+            {/* 2. El botón ahora activa el estado global */}
             <button
               onClick={() => setIsCartOpen(true)}
               className="relative group focus:outline-none"
             >
               <ShoppingCartSimpleIcon size={20} strokeWidth={1} />
 
-              {/* Solo mostramos la burbuja si hay algo en el carrito */}
               {totalItems > 0 && (
                 <span
                   className={`absolute -top-1 -right-2 text-[8px] font-brand-sans w-4 h-4 rounded-full flex items-center justify-center transition-colors shadow-sm ${
@@ -107,15 +103,14 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* COMPONENTE MÓVIL SEPARADO */}
       <MobileMenu
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         navLinks={navLinks}
       />
 
-      {/* 🌟 4. RENDERIZAMOS EL MODAL AQUÍ */}
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      {/* 3. El modal ya no necesita props, sabe cuándo abrirse solo */}
+      <CartModal />
     </>
   );
 };

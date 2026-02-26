@@ -14,11 +14,44 @@ import { useCart } from "../context/CartContext";
 const logoUrl =
   "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
 
-// Inicializamos Stripe fuera del componente para no recrearlo en cada render
-// REEMPLAZA ESTO CON TU VARIABLE DE ENTORNO: import.meta.env.VITE_STRIPE_PUBLIC_KEY
 const stripePromise = loadStripe(
   "pk_test_51Sy1AGFHPx1jF6lFYsgpzQFjPLc8j9QTLA0rw7zjf6irs1o4sJFuBNAPlkA7ISSqbispa7DFVbHRl2YAOx4Yq5mk00UaZJlUdS",
 );
+
+const ESTADOS_MEXICO = [
+  "Aguascalientes",
+  "Baja California",
+  "Baja California Sur",
+  "Campeche",
+  "Chiapas",
+  "Chihuahua",
+  "Coahuila",
+  "Colima",
+  "Ciudad de México",
+  "Durango",
+  "Guanajuato",
+  "Guerrero",
+  "Hidalgo",
+  "Jalisco",
+  "México",
+  "Michoacán",
+  "Morelos",
+  "Nayarit",
+  "Nuevo León",
+  "Oaxaca",
+  "Puebla",
+  "Querétaro",
+  "Quintana Roo",
+  "San Luis Potosí",
+  "Sinaloa",
+  "Sonora",
+  "Tabasco",
+  "Tamaulipas",
+  "Tlaxcala",
+  "Veracruz",
+  "Yucatán",
+  "Zacatecas",
+];
 
 /* =========================================================
    COMPONENTE INTERNO: EL FORMULARIO DE PAGO DE STRIPE
@@ -38,10 +71,7 @@ const StripePaymentForm = ({ clientSecret, onPaymentSuccess, onBack }) => {
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      confirmParams: {
-        // Redirigiríamos a una página de éxito, o manejamos el estado aquí
-        // Para SPA, a veces es mejor usar redirect: "if_required"
-      },
+      confirmParams: {},
       redirect: "if_required",
     });
 
@@ -64,10 +94,7 @@ const StripePaymentForm = ({ clientSecret, onPaymentSuccess, onBack }) => {
         <h3 className="font-brand-serif text-3xl text-brand-black mb-6 border-b border-brand-black/10 pb-4">
           Datos de Pago
         </h3>
-
-        {/* Componente preconstruido de Stripe */}
         <PaymentElement options={{ layout: "tabs" }} />
-
         {errorMessage && (
           <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 font-brand-sans text-[10px] uppercase tracking-widest">
             {errorMessage}
@@ -103,28 +130,49 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const { cartItems, cartSubtotal, clearCart } = useCart();
 
-  const [step, setStep] = useState(1); // 1: Datos, 2: Pago
+  const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
-  const [orderId, setOrderId] = useState(null);
 
-  // Formulario de envío y contacto
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     address: "",
     city: "",
-    state: "",
+    state: "Sonora",
     zip: "",
     references: "",
   });
 
-  // Cálculo de envío local (Espejeando la lógica de tu backend)
   const shippingCost = cartSubtotal > 2000 ? 0 : 150;
   const total = cartSubtotal + shippingCost;
 
-  // Si el carrito está vacío, no debería estar aquí
+  // AUTOCOMPLETADO POR CÓDIGO POSTAL
+  useEffect(() => {
+    const fetchAddressByZip = async () => {
+      if (formData.zip.length === 5) {
+        try {
+          const response = await fetch(
+            `https://api.zippopotam.us/mx/${formData.zip}`,
+          );
+          if (response.ok) {
+            const data = await response.json();
+            const place = data.places[0];
+            setFormData((prev) => ({
+              ...prev,
+              state: place["state"],
+              city: place["place name"],
+            }));
+          }
+        } catch (error) {
+          console.error("Error al buscar el CP:", error);
+        }
+      }
+    };
+    fetchAddressByZip();
+  }, [formData.zip]);
+
   useEffect(() => {
     if (cartItems.length === 0 && step === 1) {
       navigate("/tienda");
@@ -135,7 +183,6 @@ const CheckoutPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // PASO 1: Crear orden en tu backend y obtener ClientSecret
   const handleProceedToPayment = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -155,46 +202,33 @@ const CheckoutPage = () => {
           country: "México",
           references: formData.references,
         },
-        // Mapeamos los items exactamente como tu backend los espera
         items: cartItems.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
         })),
-        customerNote: "",
+        customerNote: formData.references, // 👈 MAPEO DE REFERENCIAS A NOTA DE CLIENTE
       };
 
       const { data } = await clientAxios.post("/orders", payload);
-
       setClientSecret(data.clientSecret);
-      setOrderId(data.order._id);
-      setStep(2); // Avanzamos a la pantalla de la tarjeta
+      setStep(2);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
-      console.error("Error creando orden:", error);
-      alert(
-        error.response?.data?.message ||
-          "Ocurrió un error al procesar tu orden.",
-      );
+      alert(error.response?.data?.message || "Error al procesar tu orden.");
     } finally {
       setLoading(false);
     }
   };
 
-  // PASO 2 EXITOSO: El pago pasó en Stripe
   const handlePaymentSuccess = () => {
     clearCart();
-    // Aquí puedes redirigir a una página de "/gracias" o mostrar un mensaje
-    navigate("/checkout/success"); // Los mandamos a la pantalla de triunfo
+    navigate("/checkout/success");
   };
 
   return (
     <main className="min-h-screen bg-brand-beige pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20">
-        {/* =========================================
-            COLUMNA IZQUIERDA: FORMULARIOS
-        ========================================= */}
         <div className="w-full lg:w-3/5 order-2 lg:order-1">
-          {/* LOGO Y BREADCRUMBS */}
           <div className="flex items-center gap-4 border-b border-brand-black/10 pb-6 mb-8">
             <img
               src={logoUrl}
@@ -219,7 +253,6 @@ const CheckoutPage = () => {
 
           <AnimatePresence mode="wait">
             {step === 1 ? (
-              // --- FORMULARIO DE DATOS ---
               <motion.form
                 key="step1"
                 initial={{ opacity: 0, x: -20 }}
@@ -297,15 +330,17 @@ const CheckoutPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="space-y-2">
                       <label className="font-brand-sans text-[9px] uppercase tracking-widest text-brand-black/60 font-bold">
-                        Código Postal *
+                        CP *
                       </label>
                       <input
                         required
                         type="text"
                         name="zip"
+                        maxLength="5"
                         value={formData.zip}
                         onChange={handleInputChange}
-                        className="w-full bg-transparent border-b border-brand-black/30 p-2 text-sm focus:border-brand-clay outline-none transition-colors"
+                        placeholder="5 dígitos"
+                        className="w-full bg-transparent border-b border-brand-black/30 p-2 text-sm focus:border-brand-clay outline-none transition-colors font-mono"
                       />
                     </div>
                     <div className="space-y-2">
@@ -325,19 +360,25 @@ const CheckoutPage = () => {
                       <label className="font-brand-sans text-[9px] uppercase tracking-widest text-brand-black/60 font-bold">
                         Estado *
                       </label>
-                      <input
+                      <select
                         required
-                        type="text"
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
-                        className="w-full bg-transparent border-b border-brand-black/30 p-2 text-sm focus:border-brand-clay outline-none transition-colors"
-                      />
+                        className="w-full bg-transparent border-b border-brand-black/30 p-2 text-sm focus:border-brand-clay outline-none transition-colors appearance-none"
+                      >
+                        <option value="">Seleccionar...</option>
+                        {ESTADOS_MEXICO.map((estado) => (
+                          <option key={estado} value={estado}>
+                            {estado}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="font-brand-sans text-[9px] uppercase tracking-widest text-brand-black/60 font-bold">
-                      Referencias del domicilio (Opcional)
+                      Referencias (Opcional)
                     </label>
                     <input
                       type="text"
@@ -352,7 +393,7 @@ const CheckoutPage = () => {
                 <div className="pt-4 flex items-center justify-between border-t border-brand-black/10">
                   <Link
                     to="/carrito"
-                    className="font-brand-sans text-[9px] uppercase tracking-widest text-brand-black/60 hover:text-brand-clay flex items-center gap-2 transition-colors"
+                    className="font-brand-sans text-[9px] uppercase tracking-widest text-brand-black/60 hover:text-brand-clay transition-colors"
                   >
                     ← Volver al carrito
                   </Link>
@@ -366,7 +407,6 @@ const CheckoutPage = () => {
                 </div>
               </motion.form>
             ) : (
-              // --- FORMULARIO DE STRIPE (PASO 2) ---
               <motion.div
                 key="step2"
                 initial={{ opacity: 0, x: 20 }}
@@ -399,20 +439,22 @@ const CheckoutPage = () => {
               Resumen de Reserva
             </h3>
 
-            {/* LISTA DE PRODUCTOS */}
-            <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto pr-2">
+            {/* LISTA DE PRODUCTOS - Ajuste de padding para evitar cortes en el badge */}
+            <div className="space-y-4 mb-6 max-h-[50vh] overflow-y-auto p-3 custom-scrollbar">
               {cartItems.map((item) => (
                 <div
                   key={item.productId}
-                  className="flex gap-4 items-center border-b border-brand-black/5 pb-4"
+                  className="flex gap-4 items-center border-b border-brand-black/5 pb-4 last:border-0"
                 >
-                  <div className="w-16 h-20 bg-brand-black/5 p-1 border border-brand-black/10 shrink-0 relative">
+                  <div className="w-20 h-24 bg-brand-black/5 p-2 border border-brand-black/10 shrink-0 relative flex items-center justify-center">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-contain mix-blend-multiply"
+                      className="max-w-full max-h-full object-contain mix-blend-multiply"
                     />
-                    <span className="absolute -top-2 -right-2 w-5 h-5 bg-brand-clay text-brand-beige text-[8px] font-brand-sans rounded-full flex items-center justify-center shadow-md">
+
+                    {/* BADGE: Posición corregida para visibilidad total */}
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-brand-clay text-brand-beige text-[8px] font-brand-sans rounded-full flex items-center justify-center shadow-md z-10">
                       {item.quantity}
                     </span>
                   </div>
@@ -431,7 +473,6 @@ const CheckoutPage = () => {
               ))}
             </div>
 
-            {/* TOTALES */}
             <div className="space-y-4 border-t border-brand-black/10 pt-6">
               <div className="flex justify-between font-brand-sans text-[10px] uppercase tracking-widest text-brand-black/60">
                 <span>Subtotal</span>
@@ -445,7 +486,6 @@ const CheckoutPage = () => {
                     : `$${shippingCost.toLocaleString("es-MX")}`}
                 </span>
               </div>
-
               <div className="flex items-end justify-between border-t border-brand-black/10 pt-4 mt-4">
                 <span className="font-brand-serif text-xl uppercase tracking-widest">
                   Total
@@ -459,7 +499,6 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* SELLOS DE CONFIANZA */}
             <div className="mt-8 flex items-center justify-center gap-4 border border-brand-black/10 p-4 bg-brand-black/5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

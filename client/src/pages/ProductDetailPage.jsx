@@ -68,9 +68,8 @@ const ProductDetailPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 👇 2. TRAEMOS LAS FUNCIONES DEL CARRITO Y EL ESTADO DEL MODAL
-  const { addToCart, totalItems } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  // 1. Extraemos el setter global del contexto
+  const { addToCart, totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -84,11 +83,12 @@ const ProductDetailPage = () => {
       }
     };
     fetchProduct();
+    window.scrollTo(0, 0); // Asegura que inicie arriba
   }, [id]);
 
-  // 👇 3. FUNCIÓN PARA AGREGAR Y ABRIR MODAL
+  // 2. Función actualizada para usar el estado global
   const handleAddToCart = () => {
-    addToCart(product);
+    addToCart(product, 1);
     setIsCartOpen(true);
   };
 
@@ -173,7 +173,7 @@ const ProductDetailPage = () => {
                 </p>
               </div>
 
-              {/* 👇 4. BOTÓN CARRITO (DERECHA) */}
+              {/* BOTÓN CARRITO (DERECHA) - Conectado al contexto global */}
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative w-12 h-12 md:w-16 md:h-16 border border-brand-beige/30 rounded-full flex items-center justify-center bg-brand-black/20 backdrop-blur-md hover:bg-brand-beige transition-all group cursor-pointer z-50 focus:outline-none"
@@ -203,7 +203,6 @@ const ProductDetailPage = () => {
                       ${product.price?.toLocaleString()}
                     </span>
                   </div>
-                  {/* 👇 5. CONECTAMOS BOTÓN MÓVIL */}
                   <button
                     onClick={handleAddToCart}
                     className="relative z-10 bg-brand-black text-brand-beige px-5 py-3 flex items-center justify-center font-brand-sans text-[8px] uppercase tracking-[0.3em] hover:bg-brand-clay transition-colors border border-brand-black"
@@ -317,7 +316,6 @@ const ProductDetailPage = () => {
                       ${product.price?.toLocaleString()}
                     </span>
                   </div>
-                  {/* 👇 6. CONECTAMOS BOTÓN DESKTOP */}
                   <button
                     onClick={handleAddToCart}
                     className="relative z-10 bg-brand-black text-brand-beige px-6 py-4 flex items-center justify-center font-brand-sans text-[9px] uppercase tracking-[0.3em] hover:bg-brand-clay transition-colors border border-brand-black hover:border-brand-clay"
@@ -447,8 +445,8 @@ const ProductDetailPage = () => {
         <Footer />
       </main>
 
-      {/* 👇 7. RENDERIZAMOS EL MODAL AL FINAL DEL COMPONENTE */}
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      {/* MODAL GLOBAL - Sin props, conectado directamente al contexto */}
+      <CartModal />
     </>
   );
 };

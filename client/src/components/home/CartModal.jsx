@@ -1,32 +1,41 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../../context/CartContext"; // Ajusta la ruta a tu contexto
+import { useCart } from "../../context/CartContext";
 
-const CartModal = ({ isOpen, onClose }) => {
-  const { cartItems, removeFromCart, updateQuantity, cartSubtotal } = useCart();
+const CartModal = () => {
+  const {
+    cartItems,
+    removeFromCart,
+    updateQuantity,
+    cartSubtotal,
+    isCartOpen,
+    setIsCartOpen,
+  } = useCart();
+
   const navigate = useNavigate();
 
-  // Función para ir al Checkout y cerrar el modal
+  const closeDrawer = () => setIsCartOpen(false);
+
   const handleCheckout = () => {
-    onClose();
+    closeDrawer();
     navigate("/checkout");
   };
 
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isCartOpen && (
         <>
-          {/* FONDO OSCURO (BACKDROP) */}
+          {/* BACKDROP */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={closeDrawer}
             className="fixed inset-0 bg-brand-black/60 z-100 backdrop-blur-sm"
           />
 
-          {/* PANEL LATERAL DEL CARRITO */}
+          {/* PANEL LATERAL */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -34,8 +43,8 @@ const CartModal = ({ isOpen, onClose }) => {
             transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
             className="fixed top-0 right-0 h-full w-full md:w-112.5 bg-brand-beige z-101 shadow-2xl flex flex-col border-l border-brand-black/20"
           >
-            {/* HEADER DEL MODAL */}
-            <div className="flex items-center justify-between px-6 py-6 border-b border-brand-black/10 bg-brand-beige">
+            {/* HEADER */}
+            <div className="flex items-center justify-between px-6 py-6 border-b border-brand-black/10">
               <div className="flex items-center gap-3">
                 <span className="font-brand-script text-3xl text-brand-clay mt-2">
                   Tu
@@ -45,8 +54,8 @@ const CartModal = ({ isOpen, onClose }) => {
                 </h2>
               </div>
               <button
-                onClick={onClose}
-                className="w-10 h-10 flex items-center justify-center border border-brand-black/20 rounded-full hover:bg-brand-clay hover:text-brand-beige hover:border-brand-clay transition-all"
+                onClick={closeDrawer}
+                className="w-10 h-10 flex items-center justify-center border border-brand-black/20 rounded-full hover:bg-brand-clay hover:text-brand-beige transition-all"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +74,7 @@ const CartModal = ({ isOpen, onClose }) => {
               </button>
             </div>
 
-            {/* CUERPO DEL CARRITO (LISTA DE PRODUCTOS) */}
+            {/* CONTENIDO */}
             <div className="flex-1 overflow-y-auto px-6 py-8">
               {cartItems.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
@@ -91,8 +100,7 @@ const CartModal = ({ isOpen, onClose }) => {
                 <div className="flex flex-col gap-8">
                   {cartItems.map((item) => (
                     <div key={item.productId} className="flex gap-4">
-                      {/* Imagen del producto */}
-                      <div className="w-20 h-24 bg-brand-black/5 p-2 flex items-center justify-center border border-brand-black/10">
+                      <div className="w-20 h-24 bg-brand-black/5 p-2 border border-brand-black/10">
                         <img
                           src={
                             item.image ||
@@ -103,7 +111,6 @@ const CartModal = ({ isOpen, onClose }) => {
                         />
                       </div>
 
-                      {/* Info del producto */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex justify-between items-start">
@@ -129,13 +136,12 @@ const CartModal = ({ isOpen, onClose }) => {
                           </span>
                         </div>
 
-                        {/* Controles de Cantidad */}
                         <div className="flex items-center border border-brand-black/20 w-fit mt-2 bg-white">
                           <button
                             onClick={() =>
                               updateQuantity(item.productId, item.quantity - 1)
                             }
-                            className="px-3 py-1 font-brand-sans text-brand-black/60 hover:text-brand-black transition-colors"
+                            className="px-3 py-1 text-brand-black/60 hover:text-brand-black"
                           >
                             -
                           </button>
@@ -146,7 +152,7 @@ const CartModal = ({ isOpen, onClose }) => {
                             onClick={() =>
                               updateQuantity(item.productId, item.quantity + 1)
                             }
-                            className="px-3 py-1 font-brand-sans text-brand-black/60 hover:text-brand-black transition-colors"
+                            className="px-3 py-1 text-brand-black/60 hover:text-brand-black"
                           >
                             +
                           </button>
@@ -158,7 +164,7 @@ const CartModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* FOOTER DEL CARRITO (TOTAL Y BOTÓN DE PAGO) */}
+            {/* FOOTER */}
             {cartItems.length > 0 && (
               <div className="p-6 border-t border-brand-black/10 bg-brand-beige">
                 <div className="flex items-end justify-between mb-6">
@@ -169,11 +175,6 @@ const CartModal = ({ isOpen, onClose }) => {
                     ${cartSubtotal.toLocaleString("es-MX")}
                   </span>
                 </div>
-
-                <p className="font-brand-sans text-[9px] text-brand-black/50 uppercase tracking-widest mb-4 text-center">
-                  Envío y métodos de pago se calculan en el siguiente paso.
-                </p>
-
                 <button
                   onClick={handleCheckout}
                   className="w-full bg-brand-black text-brand-beige py-4 font-brand-sans uppercase tracking-[0.3em] text-[10px] hover:bg-brand-clay transition-colors border border-brand-black"

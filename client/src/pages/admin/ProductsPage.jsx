@@ -16,13 +16,10 @@ const ProductsPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // 📥 CARGAR PRODUCTOS
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await clientAxios.get("/products");
-        // Filtramos para mostrar solo los que no están archivados (opcional)
-        // Si tu backend ya los filtra, esto no es necesario
         setProducts(data.filter((p) => p.isActive !== false));
       } catch (error) {
         console.error("Error cargando productos:", error);
@@ -33,32 +30,21 @@ const ProductsPage = () => {
     fetchProducts();
   }, []);
 
-  // 🛡️ LÓGICA DE ARCHIVADO (SOFT DELETE) CON DOBLE CONFIRMACIÓN
   const handleArchive = async (id, name) => {
-    // Primera confirmación
     const firstCheck = window.confirm(
       `¿Deseas retirar "${name}" del catálogo activo?`,
     );
-
     if (firstCheck) {
-      // Segunda confirmación (Advertencia Pro)
       const secondCheck = window.confirm(
-        `⚠️ CONFIRMACIÓN FINAL: El producto se ocultará de la tienda pero se mantendrá en los registros históricos para tus órdenes y estadísticas. ¿Proceder con el archivado?`,
+        `⚠️ CONFIRMACIÓN FINAL: El producto se ocultará de la tienda pero se mantendrá en registros históricos. ¿Proceder?`,
       );
-
       if (secondCheck) {
         try {
           setLoading(true);
-          // Llamamos a la nueva ruta de archivado que creamos en el backend
           await clientAxios.put(`/products/${id}/archive`);
-
-          // Removemos del estado local para que desaparezca de la tabla
           setProducts(products.filter((p) => p._id !== id));
-
-          alert("Botella archivada correctamente. 🥃");
         } catch (error) {
-          console.error("Error al archivar:", error);
-          alert("No se pudo archivar el producto. Intenta de nuevo.");
+          alert("No se pudo archivar el producto.");
         } finally {
           setLoading(false);
         }
@@ -73,41 +59,41 @@ const ProductsPage = () => {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-10">
       {/* HEADER */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-brand-dark/10 pb-6">
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-brand-black/10 pb-6">
         <div>
-          <h1 className="text-3xl font-serif text-brand-dark tracking-tighter">
+          <h1 className="text-3xl font-brand-serif text-brand-black tracking-tighter">
             Catálogo de Productos
           </h1>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-dark/40 mt-1 font-bold">
+          <p className="text-[10px] font-brand-sans uppercase tracking-[0.3em] text-brand-black/40 mt-1 font-bold">
             {products.length} Items activos en bodega
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-brand-dark/40" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-brand-black/40" />
             <input
               type="text"
               placeholder="Buscar bacanora..."
-              className="pl-9 pr-4 py-2 text-sm border border-brand-dark/10 rounded-sm outline-none focus:border-brand-clay w-full sm:w-64"
+              className="pl-9 pr-4 py-2 text-sm font-brand-sans border border-brand-black/10 rounded-sm outline-none focus:border-brand-clay w-full sm:w-64 bg-white/50"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <Link
             to="/admin/products/new"
-            className="bg-brand-clay hover:bg-red-700 text-white px-4 py-2 rounded-sm text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-lg active:scale-95"
+            className="bg-brand-clay hover:bg-brand-black text-brand-beige px-4 py-2 rounded-sm text-[10px] font-brand-sans font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
           >
             <Plus size={16} /> Nuevo Producto
           </Link>
         </div>
       </div>
 
-      {/* TABLA CON SCROLL HORIZONTAL */}
-      <div className="bg-white border border-brand-dark/10 rounded-sm shadow-sm overflow-hidden">
+      {/* TABLA */}
+      <div className="bg-white border border-brand-black/10 rounded-sm shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-212.5">
-            <thead className="bg-brand-dark/5 text-[9px] uppercase tracking-widest text-brand-dark/60 font-bold border-b border-brand-dark/10">
+            <thead className="bg-brand-black/5 text-[9px] font-brand-sans uppercase tracking-widest text-brand-black/60 font-bold border-b border-brand-black/10">
               <tr>
                 <th className="px-6 py-4">Producto</th>
                 <th className="px-6 py-4">Categoría</th>
@@ -116,12 +102,12 @@ const ProductsPage = () => {
                 <th className="px-6 py-4 text-right">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-brand-dark/5">
+            <tbody className="divide-y divide-brand-black/5 font-brand-sans">
               {loading && products.length === 0 ? (
                 <tr>
                   <td
                     colSpan="5"
-                    className="p-20 text-center animate-pulse text-[10px] uppercase tracking-widest text-brand-dark/20"
+                    className="p-20 text-center animate-pulse text-[10px] uppercase tracking-widest text-brand-black/20"
                   >
                     Sincronizando inventario...
                   </td>
@@ -130,7 +116,7 @@ const ProductsPage = () => {
                 <tr>
                   <td
                     colSpan="5"
-                    className="p-20 text-center text-[10px] uppercase tracking-widest text-brand-dark/40 italic"
+                    className="p-20 text-center text-[10px] uppercase tracking-widest text-brand-black/40 italic"
                   >
                     No se encontraron productos
                   </td>
@@ -139,41 +125,41 @@ const ProductsPage = () => {
                 filteredProducts.map((product) => (
                   <tr
                     key={product._id}
-                    className="hover:bg-brand-cream/10 transition-colors group"
+                    className="hover:bg-brand-beige/20 transition-colors group"
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-brand-dark/5 rounded-sm flex items-center justify-center border border-brand-dark/5 overflow-hidden shrink-0">
+                        <div className="w-12 h-12 bg-brand-black/5 rounded-sm flex items-center justify-center border border-brand-black/5 overflow-hidden shrink-0">
                           {product.images?.cardPrimary ? (
                             <img
                               src={product.images.cardPrimary}
                               alt={product.name}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                e.target.src = "/images/sample.jpg";
-                              }}
+                              className="w-full h-full object-cover mix-blend-multiply"
                             />
                           ) : (
-                            <Package size={18} className="text-brand-dark/20" />
+                            <Package
+                              size={18}
+                              className="text-brand-black/20"
+                            />
                           )}
                         </div>
-                        <span className="text-xs font-bold text-brand-dark uppercase tracking-tight truncate max-w-62.5">
+                        <span className="text-xs font-bold text-brand-black uppercase tracking-tight truncate max-w-62.5">
                           {product.name}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-dark/5 text-brand-dark/60 rounded-sm">
+                      <span className="text-[10px] uppercase font-bold px-2 py-1 bg-brand-black/5 text-brand-black/60 rounded-sm border border-brand-black/5">
                         {product.category || "General"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-xs font-mono font-bold text-brand-dark">
+                    <td className="px-6 py-4 text-xs font-mono font-bold text-brand-black">
                       ${product.price?.toLocaleString()}
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <span
-                          className={`text-xs font-bold ${product.countInStock <= 5 ? "text-rose-600" : "text-brand-dark"}`}
+                          className={`text-xs font-bold ${product.countInStock <= 5 ? "text-rose-600" : "text-brand-black"}`}
                         >
                           {product.countInStock}
                         </span>
@@ -189,8 +175,7 @@ const ProductsPage = () => {
                       <div className="flex justify-end gap-1">
                         <Link
                           to={`/admin/products/edit/${product._id}`}
-                          className="p-2 text-brand-dark/40 hover:text-brand-clay hover:bg-brand-clay/5 rounded-full transition-all"
-                          title="Editar Ficha"
+                          className="p-2 text-brand-black/30 hover:text-brand-clay hover:bg-brand-clay/5 rounded-full transition-all"
                         >
                           <Edit3 size={16} />
                         </Link>
@@ -198,8 +183,7 @@ const ProductsPage = () => {
                           onClick={() =>
                             handleArchive(product._id, product.name)
                           }
-                          className="p-2 text-brand-dark/40 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-all"
-                          title="Archivar (Soft Delete)"
+                          className="p-2 text-brand-black/30 hover:text-rose-600 hover:bg-rose-50 rounded-full transition-all"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -213,9 +197,8 @@ const ProductsPage = () => {
         </div>
       </div>
 
-      {/* INDICADOR MÓVIL */}
       <div className="md:hidden text-center">
-        <p className="text-[9px] text-brand-dark/30 uppercase tracking-widest flex items-center justify-center gap-2">
+        <p className="text-[9px] font-brand-sans text-brand-black/30 uppercase tracking-widest flex items-center justify-center gap-2">
           Desliza para ver acciones <MoreVertical size={10} />
         </p>
       </div>

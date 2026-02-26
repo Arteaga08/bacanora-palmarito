@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import clientAxios from "../../services/axiosConfig";
 import {
@@ -8,7 +8,6 @@ import {
   Wine,
   Info,
   DollarSign,
-  Box,
   Loader2,
 } from "lucide-react";
 
@@ -30,7 +29,6 @@ const ProductEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // 👇 1. Agregamos "volume" al estado inicial
   const [product, setProduct] = useState({
     name: "",
     price: "",
@@ -54,7 +52,6 @@ const ProductEditPage = () => {
     detail: "",
   });
 
-  // 📥 CARGAR DATOS DEL PRODUCTO
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -67,7 +64,7 @@ const ProductEditPage = () => {
           countInStock: data.countInStock,
           slug: data.slug,
           ingredients: JSON.stringify(data.ingredients),
-          volume: data.volume || "750 ML", // 👇 2. Recuperamos el volumen de la BD
+          volume: data.volume || "750 ML",
         });
         setPreviews({
           primary: data.images?.cardPrimary,
@@ -76,7 +73,6 @@ const ProductEditPage = () => {
         });
       } catch (error) {
         console.error("Error cargando producto:", error);
-        alert("No se pudo cargar la información de la botella.");
       } finally {
         setLoading(false);
       }
@@ -86,13 +82,8 @@ const ProductEditPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "name") {
-      setProduct({
-        ...product,
-        name: value,
-        slug: slugify(value),
-      });
+      setProduct({ ...product, name: value, slug: slugify(value) });
     } else {
       setProduct({ ...product, [name]: value });
     }
@@ -101,8 +92,6 @@ const ProductEditPage = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setImages({ ...images, [e.target.name]: file });
-
-    // Generar preview local
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -121,10 +110,8 @@ const ProductEditPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-
     const formData = new FormData();
     Object.keys(product).forEach((key) => formData.append(key, product[key]));
-
     if (images.imagePrimary)
       formData.append("imagePrimary", images.imagePrimary);
     if (images.imageHover) formData.append("imageHover", images.imageHover);
@@ -134,10 +121,8 @@ const ProductEditPage = () => {
       await clientAxios.put(`/products/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Botella actualizada correctamente.");
       navigate("/admin/products");
     } catch (error) {
-      console.error(error);
       alert("Hubo un error al guardar los cambios.");
     } finally {
       setSaving(false);
@@ -153,18 +138,19 @@ const ProductEditPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700 pb-20">
-      <div className="flex items-center gap-4 border-b border-brand-dark/10 pb-6">
+      {/* HEADER */}
+      <div className="flex items-center gap-4 border-b border-brand-black/10 pb-6">
         <Link
           to="/admin/products"
-          className="p-2 rounded-full hover:bg-brand-dark/5 transition-colors"
+          className="p-2 rounded-full hover:bg-brand-black/5 transition-colors text-brand-black"
         >
           <ArrowLeft size={20} />
         </Link>
         <div>
-          <h1 className="text-3xl font-serif text-brand-dark tracking-tighter">
+          <h1 className="text-3xl font-brand-serif text-brand-black tracking-tighter">
             Editar Botella
           </h1>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-brand-clay mt-1 font-bold">
+          <p className="text-[10px] font-brand-sans uppercase tracking-[0.3em] text-brand-clay mt-1 font-bold">
             Modificando: {product.name}
           </p>
         </div>
@@ -175,13 +161,13 @@ const ProductEditPage = () => {
         className="grid grid-cols-1 lg:grid-cols-3 gap-8"
       >
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white border border-brand-dark/10 p-8 rounded-sm shadow-sm space-y-6">
-            <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/60 flex items-center gap-2 border-b pb-4">
-              <Info size={14} /> Ficha Técnica
+          <div className="bg-white border border-brand-black/10 p-8 rounded-sm shadow-sm space-y-6">
+            <h3 className="text-[10px] font-brand-sans uppercase tracking-widest font-bold text-brand-black/60 flex items-center gap-2 border-b border-brand-black/5 pb-4">
+              <Info size={14} className="text-brand-clay" /> Ficha Técnica
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-brand-sans">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Nombre
                 </label>
                 <input
@@ -190,11 +176,11 @@ const ProductEditPage = () => {
                   name="name"
                   value={product.name}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay bg-brand-beige/5"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Slug (URL)
                 </label>
                 <input
@@ -203,12 +189,12 @@ const ProductEditPage = () => {
                   name="slug"
                   value={product.slug}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay bg-brand-black/2"
                 />
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+            <div className="space-y-2 font-brand-sans">
+              <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                 Descripción
               </label>
               <textarea
@@ -217,11 +203,11 @@ const ProductEditPage = () => {
                 value={product.description}
                 onChange={handleChange}
                 rows="4"
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
-              ></textarea>
+                className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay bg-brand-beige/5"
+              />
             </div>
-            <div className="space-y-2">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+            <div className="space-y-2 font-brand-sans">
+              <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                 Ingredientes (JSON)
               </label>
               <input
@@ -229,20 +215,19 @@ const ProductEditPage = () => {
                 name="ingredients"
                 value={product.ingredients}
                 onChange={handleChange}
-                className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none"
+                className="w-full p-3 border border-brand-black/10 rounded-sm text-sm font-mono focus:border-brand-clay outline-none bg-brand-black/2"
               />
             </div>
           </div>
 
-          <div className="bg-white border border-brand-dark/10 p-8 rounded-sm shadow-sm">
-            <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/60 flex items-center gap-2 border-b pb-4 mb-6">
-              <DollarSign size={14} /> Precios y Stock
+          <div className="bg-white border border-brand-black/10 p-8 rounded-sm shadow-sm font-brand-sans">
+            <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-black/60 flex items-center gap-2 border-b border-brand-black/5 pb-4 mb-6">
+              <DollarSign size={14} className="text-brand-clay" /> Precios y
+              Stock
             </h3>
-
-            {/* 👇 3. Ajustamos el grid a 4 columnas en Desktop para que quepa el volumen */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Precio (MXN)
                 </label>
                 <input
@@ -251,11 +236,11 @@ const ProductEditPage = () => {
                   name="price"
                   value={product.price}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Inventario
                 </label>
                 <input
@@ -264,13 +249,11 @@ const ProductEditPage = () => {
                   name="countInStock"
                   value={product.countInStock}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay"
                 />
               </div>
-
-              {/* 👇 4. Nuevo Input de Volumen */}
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Volumen
                 </label>
                 <input
@@ -279,20 +262,18 @@ const ProductEditPage = () => {
                   name="volume"
                   value={product.volume}
                   onChange={handleChange}
-                  placeholder="Ej. 750 ML"
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none focus:border-brand-clay uppercase"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none focus:border-brand-clay uppercase"
                 />
               </div>
-
               <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-brand-black/40">
                   Categoría
                 </label>
                 <select
                   name="category"
                   value={product.category}
                   onChange={handleChange}
-                  className="w-full p-3 border border-brand-dark/10 rounded-sm text-sm outline-none bg-white font-bold uppercase tracking-tight"
+                  className="w-full p-3 border border-brand-black/10 rounded-sm text-sm outline-none bg-white font-bold uppercase tracking-tight"
                 >
                   <option value="Bacanora">Bacanora</option>
                   <option value="Mixología">Mixología</option>
@@ -303,11 +284,10 @@ const ProductEditPage = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-white border border-brand-dark/10 p-8 rounded-sm shadow-sm space-y-6">
-            <h3 className="text-[10px] uppercase tracking-widest font-bold text-brand-dark/60 flex items-center gap-2 border-b pb-4">
-              <Upload size={14} /> Multimedia
+          <div className="bg-white border border-brand-black/10 p-8 rounded-sm shadow-sm space-y-6">
+            <h3 className="text-[10px] font-brand-sans uppercase tracking-widest font-bold text-brand-black/60 flex items-center gap-2 border-b border-brand-black/5 pb-4">
+              <Upload size={14} className="text-brand-clay" /> Multimedia
             </h3>
-
             {["imagePrimary", "imageHover", "imageDetail"].map((imgKey) => {
               const previewKey =
                 imgKey === "imagePrimary"
@@ -316,16 +296,16 @@ const ProductEditPage = () => {
                     ? "hover"
                     : "detail";
               return (
-                <div key={imgKey} className="space-y-2">
-                  <label className="text-[9px] uppercase tracking-widest font-bold text-brand-dark/40">
+                <div key={imgKey} className="space-y-2 font-brand-sans">
+                  <label className="text-[9px] uppercase tracking-widest font-bold text-brand-black/40">
                     {imgKey}
                   </label>
-                  <div className="relative group border-2 border-dashed border-brand-dark/10 rounded-sm p-4 overflow-hidden">
+                  <div className="relative group border-2 border-dashed border-brand-black/10 rounded-sm p-4 overflow-hidden bg-brand-beige/5">
                     {previews[previewKey] && (
                       <img
                         src={previews[previewKey]}
                         alt="Preview"
-                        className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity"
+                        className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity mix-blend-multiply"
                       />
                     )}
                     <input
@@ -335,8 +315,8 @@ const ProductEditPage = () => {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     <div className="text-center space-y-1 relative z-0">
-                      <Wine className="mx-auto text-brand-dark/20" size={20} />
-                      <p className="text-[9px] text-brand-dark/60 font-bold uppercase">
+                      <Wine className="mx-auto text-brand-black/20" size={20} />
+                      <p className="text-[9px] text-brand-black/60 font-bold uppercase">
                         Cambiar Imagen
                       </p>
                     </div>
@@ -344,11 +324,10 @@ const ProductEditPage = () => {
                 </div>
               );
             })}
-
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-brand-dark text-brand-cream py-4 rounded-sm text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-xl disabled:opacity-50"
+              className="w-full bg-brand-black text-brand-beige py-4 rounded-sm text-[10px] font-brand-sans font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-clay transition-all shadow-lg active:scale-95 disabled:opacity-50"
             >
               {saving ? (
                 "Guardando..."
