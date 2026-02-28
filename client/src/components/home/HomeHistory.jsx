@@ -44,9 +44,8 @@ const HomeHistory = () => {
         </h2>
 
         <p className="font-brand-sans text-brand-black/80 leading-relaxed text-sm md:text-base font-medium max-w-2xl mx-auto mt-4 md:mt-8">
-          Para los sonorenses la tierra es sagrada. Los objetos cotidianos, las
-          herramientas de trabajo y hasta las recetas se convierten en símbolos
-          que nos recuerdan de dónde venimos y hacia dónde cabalgamos.
+          Un destilado con 300 años de historia, nacido de la resistencia y el
+          orgullo de nuestra tierra.
         </p>
       </motion.div>
 
@@ -75,9 +74,8 @@ const HomeHistory = () => {
             </h3>
 
             <p className="font-brand-sans text-brand-black/80 text-sm md:text-base leading-relaxed mb-8 max-w-sm">
-              Nacido en las condiciones más extremas, nuestro agave acumula
-              dulzura y carácter bajo el sol abrasador. Cada gota es un
-              testimonio de resistencia.
+              Su nombre proviene de la lengua ópata y significa 'Ladera de
+              Carrizos'. Es la esencia de Sonora embotellada.
             </p>
             {/* EL ENLACE SE ELIMINÓ DE AQUÍ */}
           </div>
@@ -143,7 +141,7 @@ const HomeHistory = () => {
             viewport={{ once: true }}
             className="font-brand-script text-5xl md:text-7xl text-brand-beige drop-shadow-lg"
           >
-            Tiempo al tiempo
+            Tomalo Con Calma
           </motion.span>
         </div>
       </motion.div>
@@ -202,10 +200,9 @@ const HomeHistory = () => {
             </h3>
 
             <p className="font-brand-sans uppercase text-[10px] md:text-[11px] tracking-[0.2em] text-brand-black/80 leading-loose md:text-justify font-medium">
-              En cada botella se vierte agave verdadero. El Puma salvaje que se
-              muestra en la etiqueta simboliza la libertad y el respeto que
-              sentimos por la tierra. Nuestro deseo es conservarlos y llevarlos
-              por siempre en nuestra memoria.
+              En cada gota se vierte agave verdadero. El Puma de nuestra
+              etiqueta simboliza la libertad de los cerros y el respeto por el
+              proceso ancestral.
             </p>
           </motion.div>
         </div>

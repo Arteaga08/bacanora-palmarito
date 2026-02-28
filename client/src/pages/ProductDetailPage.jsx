@@ -14,9 +14,9 @@ const logoUrl =
 const processSteps = [
   {
     id: "01",
-    title: "Cocimiento",
-    subtitle: "Horno cónico de piedra",
-    text: "Una vez cosechados los corazones del agave, también llamados piñas, se cuecen por 3 a 4 días en un horno de piedra cavado en el suelo y calentado con leña, cubiertos con más piedras y pencas de maguey.",
+    title: "La Jima",
+    subtitle: "Cosecha a mano",
+    text: "El proceso comienza en el campo, donde se seleccionan agaves maduros de 7 a 8 años. El jimador corta las pencas con precisión hasta liberar el corazón o piña del Agave Pacífica.",
     img: "https://commons.wikimedia.org/wiki/Special:FilePath/Agave_tequilana_1.jpg?width=1200",
     imgOverlay:
       "https://commons.wikimedia.org/wiki/Special:FilePath/Agave_tequila.jpg?width=800",
@@ -26,21 +26,21 @@ const processSteps = [
   },
   {
     id: "02",
-    title: "Molienda",
-    subtitle: "Tahona",
-    text: "En un molino, también de piedra, se trituran los corazones o piñas para liberar los azúcares y obtener la pulpa, este paso es necesario para poder llevar a cabo la fermentación.",
+    title: "Cocimiento",
+    subtitle: "Hornos bajo tierra",
+    text: "Las piñas se tatemas en hornos cónicos de piedra durante 48 horas. El calor de la leña de mezquite transforma los almidones en azúcares y otorga el característico perfil ahumado.",
     img: "https://commons.wikimedia.org/wiki/Special:FilePath/Agave_tequilana_(5434978642).jpg?width=1200",
     imgOverlay:
       "https://commons.wikimedia.org/wiki/Special:FilePath/Mezcal_on_the_rocks.jpg?width=800",
-    verticalText: "Tradición Viva",
+    verticalText: "Piedra y Fuego",
     signaturePosition: "top-1/2 -translate-y-1/2 -right-20 md:-right-45",
     stamp: true,
   },
   {
     id: "03",
-    title: "Fermentación",
-    subtitle: "Barriles de madera",
-    text: "La pulpa obtenida de la molienda se deja reposar en tinas grandes de pino o encino para que fermente. Esta parte del proceso puede durar de 3 a 5 días, es aquí donde los sabores y aromas se multiplican e intensifican.",
+    title: "Molienda y Fermentación",
+    subtitle: "Levaduras Silvestres",
+    text: "Tras la molienda, el agave reposa en tinas de madera. La fermentación es 100% natural, permitiendo que las levaduras del entorno creen un perfil de sabor complejo y único.",
     img: "https://commons.wikimedia.org/wiki/Special:FilePath/Tequila_barrels.jpg?width=1200",
     imgOverlay:
       "https://commons.wikimedia.org/wiki/Special:FilePath/Mezcal.jpg?width=800",
@@ -52,11 +52,11 @@ const processSteps = [
     id: "04",
     title: "Destilación",
     subtitle: "Alambique de cobre",
-    text: "La masa que deriva de la fermentación se vierte en alambiques de cobre, donde se calienta, hierve, y posteriormente los vapores se condensan para dar origen al destilado como lo conocemos.",
+    text: "El líquido pasa por una doble destilación en alambiques de cobre, cuidando la pureza en cada etapa hasta obtener un Bacanora de calidad excepcional y transparencia cristalina.",
     img: "https://commons.wikimedia.org/wiki/Special:FilePath/Tequila_Silver,_Reposado,_and_Anejo.jpg?width=1200",
     imgOverlay:
       "https://commons.wikimedia.org/wiki/Special:FilePath/Mezcal_de_la_Sierra_Norte_de_Puebla_servido_con_melón_y_chapulines.jpg?width=800",
-    verticalText: "Suave al paladar",
+    verticalText: "Doble Destilación",
     signaturePosition: "top-1/2 -translate-y-1/2 -right-22 md:-right-50",
     stamp: true,
   },

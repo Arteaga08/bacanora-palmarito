@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { optimizeUrl } from "../utils/cloudinaryOptimizer.js";
 
 const mixologySchema = mongoose.Schema(
   {
@@ -35,6 +36,16 @@ const mixologySchema = mongoose.Schema(
     timestamps: true,
   },
 );
+
+mixologySchema.set("toJSON", {
+  transform: (doc, ret) => {
+    if (ret.image) {
+      // QUITAMOS el 800. Solo optimizamos formato y calidad.
+      ret.image = optimizeUrl(ret.image);
+    }
+    return ret;
+  },
+});
 
 const Mixology = mongoose.model("Mixology", mixologySchema);
 export default Mixology;

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { optimizeUrl } from "../utils/cloudinaryOptimizer.js";
 
 const productSchema = mongoose.Schema(
   {
@@ -30,9 +31,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    ingredients: [
-      { type: String },
-    ],
+    ingredients: [{ type: String }],
     price: {
       type: Number,
       required: true,
@@ -59,6 +58,17 @@ const productSchema = mongoose.Schema(
   },
 );
 
-const Product = mongoose.model("Product", productSchema);
+productSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    if (ret.images) {
+      // Optimizamos cada imagen según su uso
+      ret.images.cardPrimary = optimizeUrl(ret.images.cardPrimary);
+      ret.images.cardHover = optimizeUrl(ret.images.cardHover);
+      ret.images.displayDetail = optimizeUrl(ret.images.displayDetail);
+    }
+    return ret;
+  },
+});
 
+const Product = mongoose.model("Product", productSchema);
 export default Product;

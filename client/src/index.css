@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: "Raaf";
-  src: url("./assets/fonts/Maax-Bold2.ttf") format("truetype");
+  src: url("./assets/fonts/Maax-Bold.woff2") format("woff2");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -12,15 +12,15 @@
 
 @font-face {
   font-family: "Raaf";
-  src: url("./assets/fonts/Maax-Mediumitalic.ttf") format("truetype");
+  src: url("./assets/fonts/Maax-Mediumitalic.woff2") format("woff2");
   font-weight: 500; /* Medium */
-  font-style: normal;
+  font-style: italic;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Ballpoint";
-  src: url("./assets/fonts/Ballpoint-Regular.otf") format("truetype");
+  src: url("./assets/fonts/Ballpoint-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;

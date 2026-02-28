@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -8,54 +8,70 @@ import {
 } from "react-router-dom";
 import "./index.css";
 
-// 🌟 1. IMPORTAMOS EL CEREBRO DEL CARRITO
 import { CartProvider } from "./context/CartContext";
 
-// Layout
+// --- COMPONENTES DE ESTRUCTURA ---
 import MainLayout from "./components/layout/MainLayout";
-
-// Public Pages
-import HomePage from "./pages/HomePage";
-import ShopPage from "./pages/ShopPage";
-import HistoryPage from "./pages/HistoryPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import MixologyPage from "./pages/MixologyPage";
-import RecipePage from "./pages/RecipePage";
-import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
-
-// Admin Pages
-import AdminDashBoard from "./pages/admin/AdminDashboard";
-import LoginPage from "./pages/admin/LoginPage";
-import AdminLayout from "./components/layout/AdminLayout";
-import OrdersPage from "./pages/admin/OrdersPage";
-import OrderDetailsPage from "./pages/admin/OrderDetailsPage";
-import AuditLogPage from "./pages/admin/AuditLogPage";
-import ProductsPage from "./pages/admin/ProductsPage";
-import InventoryPage from "./pages/admin/InventoryPage";
-import ProductCreatePage from "./pages/admin/ProductCreatePage";
-import ProductEditPage from "./pages/admin/ProductEditPage";
-import AdminMixologyPage from "./pages/admin/AdminMixologyPage";
-import AdminRecipeCreatePage from "./pages/admin/AdminRecipeCreatePage";
-import AdminRecipeEditPage from "./pages/admin/AdminRecipeEditPage";
-import OrderSuccessPage from "./pages/OrderSuccessPage";
 import AgeVerification from "./components/home/AgeVerification";
 
+// Páginas Públicas
+const HomePage = lazy(() => import("./pages/HomePage"));
+const ShopPage = lazy(() => import("./pages/ShopPage"));
+const HistoryPage = lazy(() => import("./pages/HistoryPage"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+const MixologyPage = lazy(() => import("./pages/MixologyPage"));
+const RecipePage = lazy(() => import("./pages/RecipePage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const OrderSuccessPage = lazy(() => import("./pages/OrderSuccessPage"));
+
+// Páginas de Administración (Aquí está el mayor ahorro de peso)
+const AdminLayout = lazy(() => import("./components/layout/AdminLayout"));
+const AdminDashBoard = lazy(() => import("./pages/admin/AdminDashboard"));
+const LoginPage = lazy(() => import("./pages/admin/LoginPage"));
+const OrdersPage = lazy(() => import("./pages/admin/OrdersPage"));
+const OrderDetailsPage = lazy(() => import("./pages/admin/OrderDetailsPage"));
+const AuditLogPage = lazy(() => import("./pages/admin/AuditLogPage"));
+const ProductsPage = lazy(() => import("./pages/admin/ProductsPage"));
+const InventoryPage = lazy(() => import("./pages/admin/InventoryPage"));
+const ProductCreatePage = lazy(() => import("./pages/admin/ProductCreatePage"));
+const ProductEditPage = lazy(() => import("./pages/admin/ProductEditPage"));
+const AdminMixologyPage = lazy(() => import("./pages/admin/AdminMixologyPage"));
+const AdminRecipeCreatePage = lazy(
+  () => import("./pages/admin/AdminRecipeCreatePage"),
+);
+const AdminRecipeEditPage = lazy(
+  () => import("./pages/admin/AdminRecipeEditPage"),
+);
+
+// --- WRAPPER GLOBAL ---
 const GlobalWrapper = () => {
   return (
     <>
       <AgeVerification />
       <ScrollRestoration />
-      <Outlet />
+      {/* 🌟 SUSPENSE: El "Plan de Emergencia" mientras se descarga la página solicitada */}
+      <Suspense
+        fallback={
+          <div className="h-screen w-full bg-brand-beige flex flex-col items-center justify-center">
+            <span className="font-brand-sans uppercase tracking-[0.5em] text-xs text-brand-black animate-pulse">
+              Cargando Palmarito...
+            </span>
+          </div>
+        }
+      >
+        <Outlet />
+      </Suspense>
     </>
   );
 };
 
+// --- CONFIGURACIÓN DE RUTAS ---
 const router = createBrowserRouter([
   {
     element: <GlobalWrapper />,
     children: [
-      // RUTAS PÚBLICAS
+      // RUTAS PÚBLICAS 
       {
         path: "/",
         element: <MainLayout />,
@@ -77,35 +93,17 @@ const router = createBrowserRouter([
         path: "/admin",
         element: <AdminLayout />,
         children: [
-          {
-            path: "dashboard",
-            element: <AdminDashBoard />,
-          },
-          {
-            path: "orders",
-            element: <OrdersPage />,
-          },
-          {
-            path: "orders/:id",
-            element: <OrderDetailsPage />,
-          },
-          {
-            path: "products",
-            element: <ProductsPage />,
-          },
+          { path: "dashboard", element: <AdminDashBoard /> },
+          { path: "orders", element: <OrdersPage /> },
+          { path: "orders/:id", element: <OrderDetailsPage /> },
+          { path: "products", element: <ProductsPage /> },
           { path: "products/new", element: <ProductCreatePage /> },
           { path: "products/edit/:id", element: <ProductEditPage /> },
           { path: "mixology", element: <AdminMixologyPage /> },
           { path: "mixology/new", element: <AdminRecipeCreatePage /> },
           { path: "mixology/edit/:id", element: <AdminRecipeEditPage /> },
-          {
-            path: "inventory",
-            element: <InventoryPage />,
-          },
-          {
-            path: "logs",
-            element: <AuditLogPage />,
-          },
+          { path: "inventory", element: <InventoryPage /> },
+          { path: "logs", element: <AuditLogPage /> },
         ],
       },
       {
@@ -116,7 +114,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-// 🌟 2. ENVOLVEMOS TU APP ENTERA CON EL CART PROVIDER
+// --- RENDERIZADO FINAL ---
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CartProvider>

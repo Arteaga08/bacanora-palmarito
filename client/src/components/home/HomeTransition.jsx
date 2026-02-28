@@ -50,7 +50,7 @@ const HomeTransition = () => {
         className="relative z-10 w-full flex flex-col items-center justify-center text-center px-6"
       >
         <span className="font-brand-sans uppercase tracking-[0.6em] text-[10px] md:text-xs text-brand-beige/50 mb-8 block">
-          El Arte de Mezclar
+          Magia Sonorense
         </span>
 
         <h2 className="font-brand-serif text-5xl md:text-7xl lg:text-[110px] text-brand-beige uppercase tracking-tighter leading-[0.8] max-w-6xl">

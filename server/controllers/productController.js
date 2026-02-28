@@ -5,7 +5,7 @@ import AuditLog from "../models/AuditLog.js";
 // @desc    Obtener todos los productos
 //Public
 export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const products = await Product.find({ isAvailable: true }); 
   res.json(products);
 });
 
@@ -232,7 +232,7 @@ export const archiveProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    product.isActive = false;
+    product.isAvailable = false;
     const archivedProduct = await product.save();
 
     // 📝 REGISTRO EN AUDITORÍA

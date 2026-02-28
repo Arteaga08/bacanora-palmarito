@@ -40,9 +40,9 @@ const stamps = {
 
 // 🎯 CONTROL DE TEXTOS VERTICALES (Firmas laterales en las fotos)
 const sideSignatures = {
-  cap1: "Crecimiento Lento",
-  cap2: "Resistencia",
-  cap3: "Orgullo Sonorense",
+  cap1: "Agave Pacífica",
+  cap2: "Resistencia Serrana",
+  cap3: "Orgullo Ópata",
   cap4: "Tradición Viva",
 };
 
@@ -88,7 +88,7 @@ const HistoryPage = () => {
             className="w-20 md:w-32 mb-8"
           />
           <h1 className="font-brand-sans uppercase tracking-[0.4em] text-xs md:text-sm text-brand-beige drop-shadow-md">
-            Nuestra Historia
+            Crónica de un Espíritu Indomable
           </h1>
         </motion.div>
       </section>
@@ -114,8 +114,8 @@ const HistoryPage = () => {
             </span>
           </h1>
           <p className="font-brand-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-brand-black/60 max-w-lg mx-auto mt-16 md:mt-20 leading-relaxed border-l border-r border-brand-clay/30 px-6">
-            Una historia de resistencia, clandestinidad y el carácter indomable
-            del agave pacífica.
+            Crónica de resistencia, clandestinidad y el carácter inquebrantable
+            del Agave Pacífica de Sonora.
           </p>
         </motion.div>
       </section>
@@ -144,10 +144,11 @@ const HistoryPage = () => {
             De Piedra
           </h2>
           <p className="font-brand-sans text-[11px] md:text-xs tracking-[0.15em] uppercase text-brand-black/80 leading-loose mb-6 border-l border-brand-clay/30 pl-4">
-            Todo comienza con el Agave Angustifolia Haw, conocido en Sonora como
-            agave Pacífica. Una planta que desafía las sequías y el calor
-            extremo, acumulando los azúcares y minerales de la tierra roja
-            durante años antes de estar lista para la jima. (TEXTO MUESTRA).
+            El Bacanora nace del corazón del Agave Angustifolia Haw, conocido
+            localmente como Yaquiana o Pacífica. En Sonora, este agave crece en
+            condiciones áridas extremas, tardando hasta 8 años en madurar. Este
+            esfuerzo de la planta por sobrevivir le otorga un carácter único:
+            intenso, seco y con notas minerales profundas.
           </p>
         </motion.div>
 
@@ -306,10 +307,10 @@ const HistoryPage = () => {
           </h2>
 
           <p className="font-brand-sans text-brand-black/80 text-[11px] md:text-xs uppercase tracking-[0.15em] leading-loose mb-6 border-l lg:border-l-0 lg:border-r border-brand-clay/30 pl-4 lg:pl-0 lg:pr-4 lg:text-right">
-            (TEXTO MUESTRA) En 1915, se prohibió la producción de bebidas
-            alcohólicas en el estado. Quienes se atrevían a destilar eran
-            perseguidos ferozmente. Pero el Bacanora no murió; se ocultó en la
-            sierra.
+            En 1915, la ley seca de Plutarco Elías Calles persiguió ferozmente
+            al Bacanora. Durante 77 años, la tradición sobrevivió en el silencio
+            de la sierra, destilándose en vinatas ocultas en cuevas y cañadas,
+            convirtiéndose en el símbolo máximo de resistencia sonorense.
           </p>
         </motion.div>
       </section>
@@ -337,8 +338,8 @@ const HistoryPage = () => {
             </span>
           </h3>
           <p className="font-brand-sans text-[10px] md:text-xs uppercase tracking-[0.2em] text-brand-beige/60 leading-loose">
-            En 1992 la prohibición fue levantada. Hoy, el Bacanora cuenta con
-            Denominación de Origen.
+            En 1992 la prohibición fue levantada. Hoy, el Bacanora viaja
+            orgullosamente con Denominación de Origen.
           </p>
         </motion.div>
       </section>
@@ -369,15 +370,15 @@ const HistoryPage = () => {
           </h2>
 
           <p className="font-brand-sans uppercase text-[10px] md:text-[11px] tracking-[0.2em] text-brand-black/80 leading-loose md:text-justify font-medium mb-6">
-            (TEXTO MUESTRA) Nacimos del profundo respeto a nuestra tierra.
-            Palmarito no es solo una marca, es el tributo vivo a las
-            generaciones de sonorenses que mantuvieron viva la llama del
-            Bacanora durante la prohibición.
+            Bacanora Palmarito nace para honrar el lugar y la cultura que nos
+            formaron. Nuestro nombre rinde tributo a la "Ladera de Carrizos",
+            refugio de los ancestros del pueblo ópata mucho antes de que la
+            bebida tuviera nombre oficial.
           </p>
           <p className="font-brand-sans uppercase text-[10px] md:text-[11px] tracking-[0.2em] text-brand-black/80 leading-loose md:text-justify font-medium mb-8">
-            Cada botella que sellamos es una carta de amor al desierto. Un
-            homenaje a la flora, la fauna y el calor implacable que le da
-            carácter a nuestro destilado.
+            Nacimos del respeto a la vinata tradicional, colaborando con
+            maestros que mantuvieron viva la llama del Bacanora cuando el mundo
+            les pidió olvidarla.
           </p>
         </motion.div>
 
@@ -473,17 +474,17 @@ const HistoryPage = () => {
           </div>
 
           <h2 className="font-brand-script text-5xl md:text-6xl text-brand-black -mb-2 md:text-right mt-2">
-            Hecho a
+            Sabiduria
           </h2>
           <h2 className="font-brand-serif text-4xl md:text-5xl text-brand-clay leading-none uppercase tracking-tighter mb-6 md:text-right">
-            Mano
+            Vinatera
           </h2>
 
           <p className="font-brand-sans text-[11px] md:text-xs uppercase tracking-[0.15em] text-brand-black/80 leading-loose border-l md:border-l-0 md:border-r border-brand-clay/30 pl-4 md:pl-0 md:pr-4 mb-6 md:text-right">
-            (TEXTO MUESTRA) Tomamos el legado de los maestros vinateros y lo
-            embotellamos cuidando cada detalle: cocción en horno cónico de
-            piedra, fermentación natural con levaduras salvajes y doble
-            destilación en alambiques de cobre.
+            Preservamos el saber ancestral: cocción en horno de piedra,
+            fermentación natural con levaduras salvajes y doble destilación en
+            cobre. Cada botella es un testimonio vivo del vínculo indisoluble
+            entre el hombre y el desierto.
           </p>
 
           <div className="flex items-center md:justify-end gap-4 mt-6 border-t border-brand-black/10 pt-6">
@@ -538,13 +539,13 @@ const HistoryPage = () => {
             className="w-16 md:w-20 mx-auto mb-8 "
           />
           <h2 className="font-brand-serif text-3xl md:text-5xl lg:text-7xl text-brand-beige uppercase tracking-tighter leading-none mb-6">
-            No hacemos Bacanora <br className="hidden md:block" />
+            Destilamos la esencia <br className="hidden md:block" />
             <span className="font-brand-script text-brand-clay text-5xl md:text-7xl lg:text-8xl normal-case mt-2 block">
-              para el mundo
+              de nuestro origen
             </span>
           </h2>
           <p className="font-brand-sans text-[10px] md:text-xs uppercase tracking-[0.4em] text-brand-beige/80 mt-8">
-            Hacemos Bacanora para honrar a Sonora
+            Tómalo con calma. Hacemos Bacanora para honrar a Sonora
           </p>
         </motion.div>
       </section>
