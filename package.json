@@ -5,7 +5,9 @@
   "scripts": {
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "npm run build --prefix client", 
+    "preview": "npm run preview --prefix client"
   },
   "dependencies": {
     "express-rate-limit": "^8.2.1"

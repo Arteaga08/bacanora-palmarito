@@ -1,5 +1,26 @@
+# ==========================================
+# PALMARITO BACANORA - Robots.txt
+# Optimized for SEO & Security
+# ==========================================
+
 User-agent: *
 Allow: /
+Allow: /productos/
+Allow: /mixologia/
 
-# Indica aquí la URL de tu sitemap cuando lo tengas (opcional por ahora)
-# Sitemap: https://tu-dominio-final.com/sitemap.xml
+# 🛡️ SECCIONES PRIVADAS (No indexar)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /cuenta/
+Disallow: /orden-completada/
+
+# 🛑 EVITAR INDEXAR ARCHIVOS DE CONFIGURACIÓN
+Disallow: /*.env$
+Disallow: /*.json$
+Disallow: /*.config.js$
+
+# 🗺️ EL MAPA DEL SITIO (Cambia por tu dominio real cuando hagas el deploy)
+Sitemap: https://palmaritobacanora.com/sitemap.xml

@@ -10,6 +10,7 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import VidixImage from "../../components/VidixImage";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -131,7 +132,7 @@ const ProductsPage = () => {
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-brand-black/5 rounded-sm flex items-center justify-center border border-brand-black/5 overflow-hidden shrink-0">
                           {product.images?.cardPrimary ? (
-                            <img
+                            <VidixImage
                               src={product.images.cardPrimary}
                               alt={product.name}
                               className="w-full h-full object-cover mix-blend-multiply"

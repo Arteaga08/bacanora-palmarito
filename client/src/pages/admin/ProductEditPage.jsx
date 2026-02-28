@@ -10,6 +10,7 @@ import {
   DollarSign,
   Loader2,
 } from "lucide-react";
+import VidixImage from "../../components/VidixImage";
 
 const slugify = (text) => {
   return text
@@ -302,7 +303,7 @@ const ProductEditPage = () => {
                   </label>
                   <div className="relative group border-2 border-dashed border-brand-black/10 rounded-sm p-4 overflow-hidden bg-brand-beige/5">
                     {previews[previewKey] && (
-                      <img
+                      <VidixImage
                         src={previews[previewKey]}
                         alt="Preview"
                         className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity mix-blend-multiply"

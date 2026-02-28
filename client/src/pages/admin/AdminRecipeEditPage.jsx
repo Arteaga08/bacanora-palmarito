@@ -11,6 +11,7 @@ import {
   Upload,
   Loader2,
 } from "lucide-react";
+import VidixImage from "../../components/VidixImage";
 
 const slugify = (text) => {
   return text
@@ -227,7 +228,7 @@ const AdminRecipeEditPage = () => {
             </h3>
             <div className="relative group border-2 border-dashed border-brand-black/10 rounded-sm p-4 h-64 overflow-hidden flex flex-col items-center justify-center bg-brand-beige/5 hover:border-brand-clay transition-colors">
               {preview && (
-                <img
+                <VidixImage
                   src={preview}
                   alt="Preview"
                   className="absolute inset-0 w-full h-full object-cover"

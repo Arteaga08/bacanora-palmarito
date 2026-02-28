@@ -1,5 +1,5 @@
-// src/components/VidixImage.jsx
 import React from "react";
+import { sanitizeUrl } from "../../../server/utils/security";
 
 const VidixImage = ({
   src,
@@ -8,44 +8,54 @@ const VidixImage = ({
   priority = false,
   widths = [450, 800, 1200, 1920],
   fill = false,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }) => {
-  if (!src) return null;
+  // 🛡️ AQUÍ ESTÁ LA LLAMADA: Filtramos el src antes de que toque cualquier otra lógica
+  const safeSrc = sanitizeUrl(src);
 
-  // 1. Limpieza de URL (Súper importante para Vidix Studio)
-  // Esta lógica elimina cualquier parámetro que venga del backend (f_auto, q_auto, etc.)
-  // para reconstruir la URL limpia con el ancho que necesitamos.
+  // Si el filtro detecta algo raro (o no hay imagen), abortamos la misión
+  if (!safeSrc) return null;
+
   const getOptimizedUrl = (w) => {
-    if (!src.includes("res.cloudinary.com")) return src;
+    // 🌟 IMPORTANTE: A partir de aquí, solo usamos safeSrc
+    if (!safeSrc.includes("res.cloudinary.com")) return safeSrc;
 
-    // Separamos la URL en: [antes de /upload/, después de /upload/]
-    const parts = src.split("/upload/");
-    const baseUrl = parts[0];
-    // Buscamos el final de cualquier parámetro previo (buscando la 'v' de versión o el public_id)
-    const restOfUrl = parts[1]
+    const [baseUrl, rest] = safeSrc.split("/upload/");
+
+    const cleanPath = rest
       .split("/")
-      .filter((p) => !p.includes("_auto") && !p.startsWith("w_"))
+      .filter((part) => {
+        return (
+          !part.startsWith("w_") &&
+          !part.startsWith("f_") &&
+          !part.startsWith("q_") &&
+          !part.startsWith("c_")
+        );
+      })
       .join("/");
 
-    return `${baseUrl}/upload/f_auto,q_auto,w_${w}/${restOfUrl}`;
+    return `${baseUrl}/upload/f_auto,q_auto,w_${w}/${cleanPath}`;
   };
 
+  // Generamos todo basándonos en la URL ya sanitizada
   const srcSet = widths.map((w) => `${getOptimizedUrl(w)} ${w}w`).join(", ");
-  const fallbackSrc = getOptimizedUrl(1200);
+  const fallbackSrc = getOptimizedUrl(widths[1] || 800);
 
   return (
     <img
       src={fallbackSrc}
       srcSet={srcSet}
-      sizes="100vw"
+      sizes={sizes}
       alt={alt}
       className={className}
       loading={priority ? "eager" : "lazy"}
-      fetchpriority={priority ? "high" : "auto"}
+      fetchPriority={priority ? "high" : "auto"}
       style={{
         width: "100%",
         height: fill ? "100%" : "auto",
         objectFit: fill ? "cover" : "unset",
         display: "block",
+        aspectRatio: fill ? "unset" : "auto",
       }}
     />
   );

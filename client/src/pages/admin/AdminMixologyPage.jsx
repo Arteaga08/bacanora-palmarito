@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import clientAxios from "../../services/axiosConfig";
+import VidixImage from "../../components/VidixImage";
 import {
   Plus,
   Edit3,
@@ -63,7 +64,7 @@ const AdminMixologyPage = () => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-10">
-      {/* HEADER */}
+      {/* HEADER - Sin cambios */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-brand-black/10 pb-6">
         <div>
           <h1 className="text-3xl font-brand-serif text-brand-black tracking-tighter">
@@ -125,13 +126,16 @@ const AdminMixologyPage = () => {
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        {/* MINIATURA DEL CÓCTEL */}
+                        {/* 🛡️ MINIATURA DEL CÓCTEL PROTEGIDA POR VIDIX STUDIO */}
                         <div className="w-12 h-12 bg-brand-black/5 rounded-sm flex items-center justify-center border border-brand-black/5 overflow-hidden shrink-0">
                           {recipe.image ? (
-                            <img
+                            <VidixImage
                               src={recipe.image}
                               alt={recipe.name}
                               className="w-full h-full object-cover"
+                              // Como es una miniatura de 48px, pedimos anchos pequeños para no gastar banda
+                              widths={[100, 200]}
+                              sizes="48px"
                             />
                           ) : (
                             <GlassWater
@@ -161,6 +165,7 @@ const AdminMixologyPage = () => {
                       {recipe.user?.name || "Admin"}
                     </td>
                     <td className="px-6 py-4 text-right">
+                      {/* ACCIONES - Sin cambios significativos */}
                       <div className="flex justify-end gap-1">
                         <a
                           href={`/mixologia/${recipe.slug}`}

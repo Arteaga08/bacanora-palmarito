@@ -13,6 +13,7 @@ import { CartProvider } from "./context/CartContext";
 // --- COMPONENTES DE ESTRUCTURA ---
 import MainLayout from "./components/layout/MainLayout";
 import AgeVerification from "./components/home/AgeVerification";
+import PalmaritoLoader from "./components/ui/PalmaritoLoader";
 
 // Páginas Públicas
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -53,11 +54,7 @@ const GlobalWrapper = () => {
       {/* 🌟 SUSPENSE: El "Plan de Emergencia" mientras se descarga la página solicitada */}
       <Suspense
         fallback={
-          <div className="h-screen w-full bg-brand-beige flex flex-col items-center justify-center">
-            <span className="font-brand-sans uppercase tracking-[0.5em] text-xs text-brand-black animate-pulse">
-              Cargando Palmarito...
-            </span>
-          </div>
+          <PalmaritoLoader fullScreen={true} text="Preparando Bacanora" />
         }
       >
         <Outlet />
@@ -71,7 +68,7 @@ const router = createBrowserRouter([
   {
     element: <GlobalWrapper />,
     children: [
-      // RUTAS PÚBLICAS 
+      // RUTAS PÚBLICAS
       {
         path: "/",
         element: <MainLayout />,

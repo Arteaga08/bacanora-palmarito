@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import clientAxios from "../services/axiosConfig"; // Asegúrate de tu ruta
+import clientAxios from "../services/axiosConfig";
+import VidixImage from "../components/VidixImage";
 
 const logoUrl =
   "https://res.cloudinary.com/djtetdac1/image/upload/v1771606556/BACANORA_qxqqpz.png";
@@ -93,7 +94,7 @@ const RecipePage = () => {
             className="w-full h-full relative shadow-2xl"
           >
             <div className="w-full h-full overflow-hidden bg-brand-black relative">
-              <img
+              <VidixImage
                 src={image}
                 alt={name}
                 className="w-full h-full object-cover opacity-90"
